@@ -1,6 +1,7 @@
 import logo from "./logo.png";
 import "./App.css";
-import MessageTest from "./Component/MessageTest";
+//import MessageTest from "./Component/MessageTest";
+import UserAuth from "./Component/UserAuth";
 
 export default function App() {
   return (
@@ -11,9 +12,10 @@ export default function App() {
         <span className="App-logo-title-desc">
           Track, Count and Analyze your calories.
           {console.log("test", Date.now())}
-          <MessageTest displayName="MZ"/>
+          {/* <MessageTest displayName="MZ"/> */}
+          <UserAuth />
         </span>
-        <button className="login-button">Create Account Or Sign In</button>
+        {/* <button className="login-button">Create Account Or Sign In</button> */}
         
       </header>
     </div>
