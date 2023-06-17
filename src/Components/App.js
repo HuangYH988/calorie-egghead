@@ -2,7 +2,7 @@ import logo from "../Images/logo.png";
 import "./App.css";
 
 //import MessageTest from "./Component/MessageTest";
-import UserAuth from "./Component/UserAuth";
+import UserAuth from "./UserAuth";
 
 import Navbar from "./Navbar";
 // import { Routes, Route, useNavigate } from "react-router-dom";
