@@ -6,6 +6,7 @@ export class About extends React.Component{
     }
 
     render(){
-        return <div>Placeholder: About page contents</div>
+        const {isLoggedIn} =this.props;
+        return <div>Placeholder: About page contents {isLoggedIn ? <p>User is logged in</p>: <p>User is not logged in</p>}</div>
     }
 }
