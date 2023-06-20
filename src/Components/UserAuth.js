@@ -1,5 +1,5 @@
-import { useState } from "react";
-import "./App.css";
+import React, { useState } from "react";
+import "./UserAuth.css";
 
 import { auth } from "../firebase";
 import {
@@ -41,39 +41,48 @@ export default function UserAuth() {
   };
 
   return (
-    <div>
+    <div className="auth-div">
       <br />
-      <label>Display Name</label>
       <br />
-      <input
-        type="text"
-        value={displayName}
-        onChange={(e) => setDisplayName(e.target.value)}
-        placeholder="Display Name Here"
-      />
       <br />
-      <label>Email</label>
       <br />
-      <input
-        type="text"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email Here"
-      />
       <br />
-      <label>Password</label>
+      <div className="input-container">
+        <label>Display Name:</label>
+        <input
+          type="text"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+          placeholder="Display Name Here"
+        />
+      </div>
       <br />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password Here"
-      />
-
+      <div className="input-container">
+        <label>Email:</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email Here"
+        />
+      </div>
       <br />
-
-      <button onClick={() => signUp(displayName)}>SignUp</button>
-      <button onClick={signIn}>SignIn</button>
+      <div className="input-container">
+        <label>Password: </label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password Here"
+        />
+      </div>
+      <br />
+      <br />
+      <div className="button-container">
+        <button onClick={() => signUp(displayName)}>Sign Up</button>{" "}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button onClick={signIn}>Sign In</button>
+      </div>
     </div>
   );
 }
