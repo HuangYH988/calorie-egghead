@@ -7,6 +7,7 @@ import { About } from "./About";
 import Error from "./Error";
 import Home from "./Home";
 import UserAuth from "./UserAuth";
+import "./App.css";
 
 export default function Navbar() {
   const [loggedInUser, setLoggedInUser] = useState(null);
