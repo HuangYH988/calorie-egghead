@@ -15,15 +15,15 @@ export default class MessageTest extends React.Component {
 
   componentDidMount() {
     const messagesRef = ref(database, DB_MESSAGES_KEY);
-  
+
     onChildAdded(messagesRef, (data) => {
       const newMessage = { key: data.key, val: data.val() };
-  
+
       // Check if the message with the same key already exists in the state
       const existingMessage = this.state.messages.find(
         (message) => message.key === newMessage.key
       );
-  
+
       // Add the new message only if it doesn't already exist
       if (!existingMessage) {
         this.setState((state) => ({
@@ -54,7 +54,7 @@ export default class MessageTest extends React.Component {
   };
 
   render() {
-    //const { fileInputValue } = this.state;
+    
     // Convert messages in state to message JSX elements to render
     let messageListItems = this.state.messages.map((message) => (
       <li
@@ -86,4 +86,3 @@ export default class MessageTest extends React.Component {
     );
   }
 }
-
