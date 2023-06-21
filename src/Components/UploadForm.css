@@ -1,0 +1,56 @@
+.image-upload-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: 1px dotted black;
+  padding: 30px;
+}
+
+.image-upload-image {
+  height: 15vmin;
+  width: 15vmin;
+  pointer-events: none;
+  position: relative;
+}
+
+.image-upload-text {
+  margin: 0;
+  font-size: calc(10px + 1vmin);
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+}
+
+.meal-input {
+  width: 10vw;
+}
+
+.item-input {
+  width: 10vw;
+}
+
+.quantity-input {
+  width: 4.5vw;
+}
+
+label {
+  margin-right: 10px;
+}
+
+.submit-button {
+  background-color: #063846;
+  padding: 0.5vh 4.5vw;
+  border: 1px solid #fff;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: calc(8px + 1vmin);
+  color: #fff;
+}
