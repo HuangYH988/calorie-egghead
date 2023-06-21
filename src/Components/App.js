@@ -3,14 +3,14 @@ import "./App.css";
 //import logo from "../Images/logo.png";
 import Analysis from "./Analysis";
 //import UploadForm from "./UploadForm";
-import Navbar from "./Navbar";
+//import Navbar from "./Navbar";
 
 
 export default function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Navbar />
+        {/* <Navbar /> */}
         <Analysis />
 
         {/* <UserAuth /> */}
