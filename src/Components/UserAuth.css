@@ -1,0 +1,31 @@
+.auth-div {
+  font-size: calc(7px + 1vmin);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 360px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.input-container label {
+  margin-right: 10px;
+  text-align: left;
+}
+
+.input-container input[type="text"],
+.input-container input[type="email"],
+.input-container input[type="password"] {
+  width: 60%;
+  height: 22px;
+  text-align: left;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
