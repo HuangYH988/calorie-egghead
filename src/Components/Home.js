@@ -1,6 +1,8 @@
 import React from "react";
 import logo from "../Images/logo.png";
 import "./Home.css";
+import { Routes, Link, Route } from "react-router-dom";
+import UserAuth from "./UserAuth";
 
 export default function Home() {
   return (
@@ -10,7 +12,14 @@ export default function Home() {
       <span className="Home-logo-title-desc">
         Track, Count and Analyze your calories.
       </span>
-      <button className="login-button">Create Account Or Log In</button>
+      <button className="login-button">
+        <Link to="/login" style={{ textDecoration: "none" }}>
+          Create Account Or Log In
+        </Link>
+      </button>
+      <Routes>
+        <Route path="/login" element={<UserAuth />} />
+      </Routes>
     </div>
   );
 }

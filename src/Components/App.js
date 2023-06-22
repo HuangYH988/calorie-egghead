@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 
-import Analysis from "./Analysis";
 
 import Navbar from "./Navbar";
 
@@ -11,12 +10,11 @@ export default function App() {
     <div className="App">
       <header className="App-header">
 
-        {/* <Navbar /> */}
-        <Analysis />
+         <Navbar /> 
+        
 
-        {/* <UserAuth /> */}
-        {/* <UploadForm /> */}
-        {/* <button className="login-button">Create Account Or Log In</button> */}
+        
+        
 
       </header>
     </div>

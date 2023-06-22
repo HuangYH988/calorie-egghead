@@ -7,21 +7,25 @@ import {
   Routes,
   Link,
   Route,
-  /*useNavigate,*/
+  
 } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
 import FAQ from "./FAQ";
 import ErrorPage from "./ErrorPage";
 import UserAuth from "./UserAuth";
-
+import Analysis from "./Analysis/Analysis";
 import UploadForm from "./UploadForm";
-
+import AnalysisDay from "./Analysis/AnalysisDay";
+import AnalysisWeek from "./Analysis/AnalysisWeek";
+import * as Items from "./Data/DummyData";
 
 export default function Navbar() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   //const navigate = useNavigate();
-
+  const dummyData = Items.foodItem1.items;
+  const dummyData2 = Items.foodItem2.items;
+  const weekData = [dummyData, dummyData2];
   useEffect(
     () => {
       onAuthStateChanged(auth, (user) => {
@@ -56,6 +60,11 @@ export default function Navbar() {
               FAQ
             </Link>
           </Typography>
+          <Typography variant="body1" style={{ color: "#063846" }}>
+            <Link to="/analysis" style={{ textDecoration: "none" }}>
+              Analysis
+            </Link>
+          </Typography>
           <div style={{ flexGrow: 1 }}></div>
           {loggedInUser ? (
             <Typography variant="body1" style={{ color: "#063846" }}>
@@ -85,9 +94,15 @@ export default function Navbar() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/analysis" element={<Analysis />} />
         <Route path="/login" element={<UserAuth />} />
         <Route path="/logmeal" element={<UploadForm />} />
         <Route path="*" element={<ErrorPage />} />
+        <Route path="/analysis/daily" element={<AnalysisDay data={dummyData}/>} />
+          <Route
+            path="/analysis/weekly"
+            element={<AnalysisWeek data={weekData} />}
+          />
       </Routes>
     </BrowserRouter>
   );
