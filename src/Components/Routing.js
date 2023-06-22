@@ -1,0 +1,38 @@
+import {  Routes, Route } from "react-router-dom";
+import Home from "./Home";
+import About from "./About";
+import FAQ from "./FAQ";
+import ErrorPage from "./ErrorPage";
+import UserAuth from "./UserAuth";
+import Analysis from "./Analysis/Analysis";
+import UploadForm from "./UploadForm";
+import AnalysisDay from "./Analysis/AnalysisDay";
+import AnalysisWeek from "./Analysis/AnalysisWeek";
+import * as Items from "./Data/DummyData";
+
+export default function Routing() {
+  const dummyData = Items.foodItem1.items;
+  const dummyData2 = Items.foodItem2.items;
+  const weekData = [dummyData, dummyData2];
+  return (
+    
+      <Routes>
+        <Route path="*" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/analysis" element={<Analysis />} />
+        <Route path="/login" element={<UserAuth />} />
+        <Route path="/logmeal" element={<UploadForm />} />
+        <Route path="*" element={<ErrorPage />} />
+        <Route
+          path="/analysis/daily"
+          element={<AnalysisDay data={dummyData} />}
+        />
+        <Route
+          path="/analysis/weekly"
+          element={<AnalysisWeek data={weekData} />}
+        />
+      </Routes>
+    
+  );
+}
