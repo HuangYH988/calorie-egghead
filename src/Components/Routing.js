@@ -1,4 +1,4 @@
-import {  Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
 import FAQ from "./FAQ";
@@ -9,15 +9,20 @@ import UploadForm from "./UploadForm";
 import AnalysisDay from "./Analysis/AnalysisDay";
 import AnalysisWeek from "./Analysis/AnalysisWeek";
 import * as Items from "./Data/DummyData";
+import React from "react";
 
-export default function Routing() {
-  const dummyData = Items.foodItem1.items;
-  const dummyData2 = Items.foodItem2.items;
-  const weekData = [dummyData, dummyData2];
-  return (
-    
+export default class Routing extends React.Component{
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const dummyData = Items.foodItem1.items;
+    const dummyData2 = Items.foodItem2.items;
+    const weekData = [dummyData, dummyData2];
+    const { state } = this.props;
+    return (
       <Routes>
-        <Route path="*" element={<Home />} />
+        <Route path="*" element={<Home logInUser={state} />} />
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/analysis" element={<Analysis />} />
@@ -33,6 +38,6 @@ export default function Routing() {
           element={<AnalysisWeek data={weekData} />}
         />
       </Routes>
-    
-  );
+    );
+  }
 }

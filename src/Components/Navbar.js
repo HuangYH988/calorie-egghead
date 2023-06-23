@@ -8,7 +8,7 @@ import Routing from "./Routing";
 export default function Navbar() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   //const navigate = useNavigate();
-
+  
   useEffect(
     () => {
       onAuthStateChanged(auth, (user) => {
@@ -21,7 +21,7 @@ export default function Navbar() {
       });
     } /*[navigate]*/
   );
-
+  
   return (
     <BrowserRouter>
     <AppBar position="static" style={{ backgroundColor: "#e1f4fa" }}>
@@ -71,6 +71,6 @@ export default function Navbar() {
           </Typography>
         )}
       </Toolbar>
-    </AppBar><Routing /></BrowserRouter>
+    </AppBar><Routing state={loggedInUser}/></BrowserRouter>
   );
 }
