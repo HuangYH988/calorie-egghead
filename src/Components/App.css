@@ -33,3 +33,11 @@ a:hover {
   font-weight: bold;
   text-decoration: underline;
 }
+
+.Analysis-links{
+  display: flex;
+  position: absolute;
+  top: 90vh;
+  left: 45vw;
+  justify-content: space-around;
+}

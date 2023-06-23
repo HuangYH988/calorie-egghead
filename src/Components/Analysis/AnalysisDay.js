@@ -1,6 +1,5 @@
 import React from "react";
 import Plot from "react-plotly.js";
-import {Link} from "react-router-dom";
 
 const RECOMMENDED_CALORIE = 3200;
 const RECOMMENDED_CARBO = 406;
@@ -54,7 +53,6 @@ export default class AnalysisDay extends React.Component {
         labels: ["Calories consumed", "Maximum daily recommendation"],
         domain: {
           x: [0, 0.48],
-
           y: [0.52, 1],
         },
         hoverinfo: ["test1", "test2"],
@@ -67,7 +65,6 @@ export default class AnalysisDay extends React.Component {
         labels: ["Carbohydrate consumed", "Maximum daily recommendation"],
         domain: {
           x: [0.52, 1],
-
           y: [0.52, 1],
         },
         hoverinfo: ["test1", "test2"],
@@ -80,7 +77,6 @@ export default class AnalysisDay extends React.Component {
         labels: ["Saturated fat consumed", "Maximum daily recommendation"],
         domain: {
           x: [0, 0.48],
-
           y: [0, 0.48],
         },
         hoverinfo: ["test1", "test2"],
@@ -93,7 +89,6 @@ export default class AnalysisDay extends React.Component {
         labels: ["Cholestrol consumed", "Maximum daily recommendation"],
         domain: {
           x: [0.52, 1],
-
           y: [0, 0.48],
         },
         hoverinfo: ["test1", "test2"],
@@ -116,63 +111,62 @@ export default class AnalysisDay extends React.Component {
           font: {
             size: 20,
           },
-
           showarrow: false,
-
           text: "Calories",
-
-          x: 0.2,
-
-          y: 0.78,
+          x: 0.19,
+          y: 0.79,
         },
 
         {
           font: {
-            size: 15,
-          },
-
+            size: 18,          },
           showarrow: false,
-
-          text: "Carbohydrates",
-
+          text: `Carbo-`,
+          width: 80,
           x: 0.81,
-
-          y: 0.78,
+          y: 0.8,
         },
         {
           font: {
             size: 18,
           },
-
           showarrow: false,
-
-          text: "Saturated Fat",
-
-          x: 0.18,
-
-          y: 0.21,
+          text: `hydrates`,
+          width: 80,
+          x: 0.81,
+          y: 0.77,
+        },
+        {
+          font: {
+            size: 19,
+          },
+          showarrow: false,
+          text: "Saturated",
+          x: 0.19,
+          y: 0.23,
+        },
+        {
+          font: {
+            size: 19,
+          },
+          showarrow: false,
+          text: "Fat",
+          x: 0.22,
+          y: 0.19,
         },
         {
           font: {
             size: 18,
           },
-
           showarrow: false,
-
           text: "Cholestrol",
-
-          x: 0.8,
-
+          x: 0.81,
           y: 0.21,
         },
       ],
-
-      height: 800,
-
-      width: 1200,
-
+      height: 700,
+      width: 1000,
       showlegend: false,
-
       grid: { rows: 1, columns: 2 },
     };
     return (
@@ -180,12 +174,6 @@ export default class AnalysisDay extends React.Component {
         <h1>Daily nutritional analysis</h1>
         <Plot data={chartData} layout={layout} />
         <br />
-        <Link to="/analysis/daily" style={{ textDecoration: "none" }}>
-            Daily
-          </Link>
-          <Link to="/analysis/weekly" style={{ textDecoration: "none" }}>
-            Weekly
-          </Link>
       </div>
     );
   }

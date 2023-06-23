@@ -43,6 +43,7 @@ export default function Navbar() {
             FAQ
           </Link>
         </Typography>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <Typography variant="body1" style={{ color: "#063846" }}>
           <Link to="/analysis" style={{ textDecoration: "none" }}>
             Analysis

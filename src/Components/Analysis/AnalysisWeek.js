@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+
 import Plot from "react-plotly.js";
 
 export default class AnalysisWeek extends React.Component {
@@ -12,6 +12,7 @@ export default class AnalysisWeek extends React.Component {
     let carbo = 0;
     let satFat = 0;
     let chol = 0;
+    
     const colorMap = {
       monday: "rgba(255,0,50,0.6)",
       tuesday: "rgba(255,150,0,0.6)",
@@ -31,19 +32,15 @@ export default class AnalysisWeek extends React.Component {
     }
     const nut = {
       x: ["calories", "carbohydrate", "saturated fat", "cholesterol"],
-
       y: [cal, carbo, satFat, chol],
       name: "Intake on " + day,
       orientation: "v",
       text: ["", "unit: g", "unit: g", "unit: mg"].map(String),
-
       textposition: "auto",
       marker: {
         color,
-
         width: 1,
       },
-
       type: "bar",
     };
 
@@ -54,7 +51,8 @@ export default class AnalysisWeek extends React.Component {
     const { data } = this.props;
     const layout = {
       title: "Weekly nutrition intake",
-
+      height: 700,
+      width: 1000,
       barmode: "group",
     };
     const mondayNutrition = this.dataPlot(data[0], "monday");
@@ -64,13 +62,7 @@ export default class AnalysisWeek extends React.Component {
       <div>
         <h1>Nutritional analysis by week</h1>
         <Plot data={nutrition} layout={layout} />
-        <br />
-        <Link to="/analysis/daily" style={{ textDecoration: "none" }}>
-            Daily
-          </Link>
-          <Link to="/analysis/weekly" style={{ textDecoration: "none" }}>
-            Weekly
-          </Link>
+        <br />        
       </div>
     );
   }
