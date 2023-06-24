@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import "./UploadForm.css";
 import cloud from "../Images/cloud.jpg";
-
-// import { useNavigate } from "react-router-dom";
-// import { database, storage } from "../firebase";
-// import {
-//   getDownloadURL,
-//   ref as storageRef,
-//   uploadBytes,
-// } from "firebase/storage";
-// import { push, ref as databaseRef, set } from "firebase/database";
-
+import axios from "axios";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
+import { database /*, storage*/ } from "../firebase";
+import { push, ref as databaseRef, set } from "firebase/database";
+/*import {
+  getDownloadURL,
+  ref as storageRef,
+  uploadBytes,
+} from "firebase/storage";*/
 
-export default function UploadForm(props) {
+const LOGS_FOLDER_NAME = "Logs";
+//const IMAGES_FOLDER_NAME = "Images";
+
+export default function UploadForm({ logInUser }) {
   const currentDate = new Date();
 
   const [formData, setFormData] = useState({
+    sel_DateTime: dayjs(currentDate.toISOString().slice(0, 16)),
     meal_desc: "",
     item1: "",
     quantity1: "",
@@ -41,11 +43,49 @@ export default function UploadForm(props) {
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const query =
+      formData.quantity1 +
+      " " +
+      formData.item1 +
+      " and " +
+      formData.quantity2 +
+      " " +
+      formData.item2 +
+      " and " +
+      formData.quantity3 +
+      " " +
+      formData.item3 +
+      " and " +
+      formData.quantity4 +
+      " " +
+      formData.item4 +
+      " and " +
+      formData.quantity5 +
+      " " +
+      formData.item5;
 
-    // Perform desired actions with the extracted values
-    console.log(formData);
+    try {
+      const response = await axios.get(
+        `https://api.calorieninjas.com/v1/nutrition?query=${query}`,
+        {
+          headers: { "X-Api-Key": process.env.REACT_APP_CALORIE_NINJA_API_KEY },
+        }
+      );
+
+      const logsListRef = databaseRef(database, LOGS_FOLDER_NAME);
+      const newLogRef = push(logsListRef);
+      set(newLogRef, {
+        authorEmail: logInUser.email,
+        date: formData.sel_DateTime.format("YYYY-MM-DD"),
+        /*imageLink: downloadUrl,*/
+        description: formData.meal_desc,
+        data: response.data.items,
+      });
+    } catch (error) {
+      console.error("Request failed:", error);
+    }
   };
 
   return (
@@ -58,6 +98,7 @@ export default function UploadForm(props) {
           <MobileDateTimePicker
             label="Input Date & Time of Food Intake"
             defaultValue={dayjs(currentDate.toISOString().slice(0, 16))}
+            value={formData.sel_DateTime}
           />
         </LocalizationProvider>
 

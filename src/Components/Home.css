@@ -61,7 +61,13 @@
   top: 15vh;
 }
 
-
 .login-button:hover {
   background-color: #eeeef0; /* Change background color on hover */
+}
+
+.Home-links {
+  display: flex;
+  position: relative;
+  top: 20vh;
+  justify-content: space-around;
 }
