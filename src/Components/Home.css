@@ -45,6 +45,13 @@
   font-size: calc(8px + 2vmin);
 }
 
+.Home-logo-title-desc2 {
+  color: #54596e;
+  position: relative;
+  top: 10vh;
+  font-size: calc(8px + 2vmin);
+}
+
 .login-button {
   background-color: #fff; /* Set the background color */
   padding: 8px 20px;
@@ -56,18 +63,23 @@
   font-size: calc(10px + 1vmin);
   color: #063846;
 }
-.Home-div2 {
-  position: relative;
-  top: 15vh;
-}
 
 .login-button:hover {
   background-color: #eeeef0; /* Change background color on hover */
 }
 
-.Home-links {
-  display: flex;
+.Home-buttons {
+  background-color: #e1f4fa;
+  padding: 50px 60px;
+  border: 2.5px solid #063846;
+  border-radius: 3px;
+  text-decoration: none;
   position: relative;
   top: 20vh;
-  justify-content: space-around;
+  font-size: calc(12px + 1vmin);
+  justify-content: space-between;
+}
+
+.Home-buttons:hover {
+  background-color: #f5fbfd; /* Change background color on hover */
 }

@@ -4,6 +4,8 @@
   flex-direction: column;
   border: 1px dotted black;
   padding: 30px;
+  height: 22vmin;
+  width: 40vmin;
 }
 
 .image-upload-image {
@@ -11,6 +13,12 @@
   width: 15vmin;
   pointer-events: none;
   position: relative;
+}
+
+.selectedPhoto-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .image-upload-text {
