@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./UserAuth.css";
 
 import { auth } from "../firebase";
@@ -21,7 +21,6 @@ export default function UserAuth() {
     const user = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(auth.currentUser, { displayName }).then(() => {
       console.log("Profile updated successfully.");
-      // Continue with the rest of the app logic here
       setDisplayName("");
       setEmail("");
       setPassword("");

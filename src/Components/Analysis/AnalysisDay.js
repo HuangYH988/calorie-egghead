@@ -50,7 +50,7 @@ export default class AnalysisDay extends React.Component {
     const pieChartData = [
       {
         values: [percentageCal, 100 - percentageCal],
-        labels: ["Calories consumed", "Maximum daily recommendation"],
+        labels: ["Calories consumed: "+cal, "Maximum daily recommendation: 3200"],
         domain: {
           x: [0, 0.48],
           y: [0.52, 1],
@@ -62,7 +62,7 @@ export default class AnalysisDay extends React.Component {
       },
       {
         values: [percentageCarbo, 100 - percentageCarbo],
-        labels: ["Carbohydrate consumed", "Maximum daily recommendation"],
+        labels: ["Carbohydrate consumed: "+carbo, "Maximum daily recommendation: 406g"],
         domain: {
           x: [0.52, 1],
           y: [0.52, 1],
@@ -74,7 +74,7 @@ export default class AnalysisDay extends React.Component {
       },
       {
         values: [percentageSatFat, 100 - percentageSatFat],
-        labels: ["Saturated fat consumed", "Maximum daily recommendation"],
+        labels: ["Saturated fat consumed: "+satFat, "Maximum daily recommendation: 17g"],
         domain: {
           x: [0, 0.48],
           y: [0, 0.48],
@@ -86,7 +86,7 @@ export default class AnalysisDay extends React.Component {
       },
       {
         values: [percentageChol, 100 - percentageChol],
-        labels: ["Cholestrol consumed", "Maximum daily recommendation"],
+        labels: ["Cholestrol consumed: "+chol, "Maximum daily recommendation: 300mg"],
         domain: {
           x: [0.52, 1],
           y: [0, 0.48],
