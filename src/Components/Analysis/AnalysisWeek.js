@@ -1,6 +1,7 @@
 import React from "react";
-
+import { Link, Outlet } from "react-router-dom";
 import Plot from "react-plotly.js";
+import { Button } from "@mui/material";
 
 export default class AnalysisWeek extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class AnalysisWeek extends React.Component {
     let carbo = 0;
     let satFat = 0;
     let chol = 0;
-    
+
     const colorMap = {
       monday: "rgba(255,0,50,0.6)",
       tuesday: "rgba(255,150,0,0.6)",
@@ -61,8 +62,38 @@ export default class AnalysisWeek extends React.Component {
     return (
       <div>
         <h1>Nutritional analysis by week</h1>
-        <Plot data={nutrition} layout={layout} />
-        <br />        
+        <div className="Analysis-container">
+          <div className="Analysis-sidebar">
+            <Button
+              variant="contained"
+              // disabled={daily}
+              // onClick={() => this.onClickDaily()}
+            >
+              <Link
+                to="/analysis/weekly/cal+sodium"
+                style={{ textDecoration: "none" }}
+              >
+                Calories+Sodium intake
+              </Link>
+            </Button>
+            <Button
+              variant="contained"
+              // disabled={weekly}
+              // onClick={() => this.onClickWeekly()}
+            >
+              <Link
+                to="/analysis/weekly/others"
+                style={{ textDecoration: "none" }}
+              >
+                Carbo, Fat and Cholesterol
+              </Link>
+            </Button>
+          </div>
+          <div className="Analysis-plot">
+            <Plot layout={layout} />
+          </div>
+        </div>
+        <Outlet />
       </div>
     );
   }
