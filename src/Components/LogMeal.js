@@ -6,23 +6,27 @@ import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
-import { database /*, storage*/ } from "../firebase";
-import { push, ref as databaseRef, set } from "firebase/database";
 import InputForms from "./InputForms";
 
-/*import {
+import { database, storage } from "../firebase";
+import { push, ref as databaseRef, set } from "firebase/database";
+import {
   getDownloadURL,
   ref as storageRef,
   uploadBytes,
-} from "firebase/storage";*/
+} from "firebase/storage";
 
 const LOGS_FOLDER_NAME = "Logs";
-//const IMAGES_FOLDER_NAME = "Images";
+const IMAGES_FOLDER_NAME = "Images";
 
 export default function UploadForm({ logInUser }) {
   const currentDate = new Date();
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const fileInputRef = useRef(null);
+
+  const [downloadUrl, setdownloadUrl] = useState(null);
+  const [SubmitFlag, setSubmitFlag] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
     sel_DateTime: dayjs(currentDate.toISOString().slice(0, 16)),
@@ -39,7 +43,12 @@ export default function UploadForm({ logInUser }) {
     quantity5: "",
   });
 
+  const setErrorState = (error) => {
+    setErrorMessage(error.message);
+  };
+
   const handleChange = (event) => {
+    setSubmitFlag(false);
     const { id, value } = event.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -50,9 +59,21 @@ export default function UploadForm({ logInUser }) {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     setSelectedPhoto(URL.createObjectURL(file));
+
+    const fileFireBaseRef = storageRef(
+      storage,
+      `${IMAGES_FOLDER_NAME}/${file.name}`
+    );
+
+    uploadBytes(fileFireBaseRef, file).then(() => {
+      getDownloadURL(fileFireBaseRef).then((downloadUrl) => {
+        setdownloadUrl(downloadUrl);
+      });
+    });
   };
 
   const handleClick = () => {
+    setSubmitFlag(false);
     fileInputRef.current.click();
   };
 
@@ -80,6 +101,7 @@ export default function UploadForm({ logInUser }) {
       formData.item5;
 
     try {
+      setSubmitFlag(true);
       const response = await axios.get(
         `https://api.calorieninjas.com/v1/nutrition?query=${query}`,
         {
@@ -92,11 +114,12 @@ export default function UploadForm({ logInUser }) {
       set(newLogRef, {
         authorEmail: logInUser.email,
         date: formData.sel_DateTime.format("YYYY-MM-DD"),
-        /*imageLink: downloadUrl,*/
+        imageLink: downloadUrl,
         description: formData.meal_desc,
         data: response.data.items,
       });
 
+      setSelectedPhoto(null);
       setFormData({
         sel_DateTime: dayjs(currentDate.toISOString().slice(0, 16)),
         meal_desc: "",
@@ -112,7 +135,7 @@ export default function UploadForm({ logInUser }) {
         quantity5: "",
       });
     } catch (error) {
-      console.error("Request failed:", error);
+      setErrorState(error);
     }
   };
 
@@ -169,6 +192,18 @@ export default function UploadForm({ logInUser }) {
         <button type="submit" className="submit-button">
           Log Meal
         </button>
+
+        <br />
+        <br />
+        <br />
+
+        <p className="error-msg">
+          {SubmitFlag === true
+            ? errorMessage
+              ? `Error message: ${errorMessage}`
+              : `Meal Logged Successfully!`
+            : null}
+        </p>
       </div>
     </form>
   );

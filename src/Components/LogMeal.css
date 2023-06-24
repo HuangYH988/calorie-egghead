@@ -62,3 +62,16 @@ label {
   font-size: calc(8px + 1vmin);
   color: #fff;
 }
+
+.error-msg {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow-wrap: break-word;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: calc(9px + 1vmin);
+  color: #000000;
+}
