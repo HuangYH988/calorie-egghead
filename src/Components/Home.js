@@ -21,7 +21,11 @@ export default function Home({ logInUser }) {
             <Link to="/logmeal" style={{ textDecoration: "none" }}>
               <button className="Home-buttons"> LOG MEAL</button>
             </Link>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Link to="/history" style={{ textDecoration: "none" }}>
+              <button className="Home-buttons"> HISTORY </button>
+            </Link>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Link to="/analysis" style={{ textDecoration: "none" }}>
               <button className="Home-buttons"> ANALYSIS </button>
             </Link>

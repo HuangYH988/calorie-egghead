@@ -1,0 +1,64 @@
+#logs-heading {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  text-align: center;
+  color: #063846;
+  font-size: calc(3px + 2vmin);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.vertical-scrollable-card-deck-container {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 75vh; /* Set the desired height for the container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border-style: dotted; /* Set the border style to dotted */
+  border-color: rgba(6, 56, 70, 0.5); /* Set the border color with alpha 0.5 */
+  border-width: 1px; /* Set the border width */
+}
+
+.vertical-scrollable-card-deck {
+  display: flex;
+  flex-direction: column; /* Arrange the cards vertically */
+  padding: 25px;
+}
+
+.log-card {
+  height: 35vh; /* Set the desired height */
+  width: 16vw; /* Set the desired width */
+  margin-bottom: 10px;
+  padding: 5px 5px;
+  flex: 0 0 auto; /* Prevent cards from resizing */
+  font-size: 18px;
+  color: #000;
+  border: 3px solid #063846;
+}
+
+.max-height-image {
+  height: 22vh;
+  width: 20vh;
+  object-fit: cover;
+}
+
+.card-author {
+  overflow-wrap: break-word; /* Wrap the text to the next line */
+}
+
+.card-text {
+  overflow-wrap: break-word; /* Wrap the text to the next line */
+}
+
+.empty-page-text {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  color: #063846;
+}

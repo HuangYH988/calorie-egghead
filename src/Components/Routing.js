@@ -6,8 +6,9 @@ import About from "./About";
 import FAQ from "./FAQ";
 import ErrorPage from "./ErrorPage";
 import UserAuth from "./UserAuth";
-import Analysis from "./Analysis/Analysis";
 import LogMeal from "./LogMeal";
+import Hist from "./Hist";
+import Analysis from "./Analysis/Analysis";
 import AnalysisDay from "./Analysis/AnalysisDay";
 import AnalysisWeek from "./Analysis/AnalysisWeek";
 import * as Items from "./Data/DummyData";
@@ -27,6 +28,7 @@ export default function Routing({ loggedInUser }) {
       </Route>
       <Route path="/login" element={<UserAuth />} />
       <Route path="/logmeal" element={<LogMeal logInUser={loggedInUser} />} />
+      <Route path="/history" element={<Hist logInUser={loggedInUser} />} />
       <Route path="/*" element={<ErrorPage />} />
     </Routes>
   );
