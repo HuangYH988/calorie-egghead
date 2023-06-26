@@ -9,7 +9,7 @@
   width: 25vmin;
   pointer-events: none;
   position: relative;
-  top: 8vh;
+  top: 7vh;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -32,7 +32,7 @@
 
 .Home-logo-title {
   position: relative;
-  top: 10vh;
+  top: 9vh;
   font-size: calc(12px + 4vmin);
   color: #063846;
   font-weight: bold;
@@ -41,7 +41,14 @@
 .Home-logo-title-desc {
   color: #063846;
   position: relative;
-  top: 10vh;
+  top: 9vh;
+  font-size: calc(8px + 2vmin);
+}
+
+.Home-logo-title-desc2 {
+  color: #54596e;
+  position: relative;
+  top: 9vh;
   font-size: calc(8px + 2vmin);
 }
 
@@ -52,22 +59,27 @@
   border-radius: 15px;
   text-decoration: none; /* Remove underline */
   position: relative;
-  top: 20vh;
+  top: 18vh;
   font-size: calc(10px + 1vmin);
   color: #063846;
-}
-.Home-div2 {
-  position: relative;
-  top: 15vh;
 }
 
 .login-button:hover {
   background-color: #eeeef0; /* Change background color on hover */
 }
 
-.Home-links {
-  display: flex;
+.Home-buttons {
+  background-color: #e1f4fa;
+  padding: 45px 55px;
+  border: 2.5px solid #063846;
+  border-radius: 3px;
+  text-decoration: none;
   position: relative;
-  top: 20vh;
-  justify-content: space-around;
+  top: 18vh;
+  font-size: calc(11px + 1vmin);
+  justify-content: space-between;
+}
+
+.Home-buttons:hover {
+  background-color: #f5fbfd; /* Change background color on hover */
 }

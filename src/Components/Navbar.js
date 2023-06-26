@@ -1,79 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
-import { auth } from "../firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { BrowserRouter, Link /*, useNavigate */ } from "react-router-dom";
-import Routing from "./Routing";
+import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
-export default function Navbar() {
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  //const navigate = useNavigate();
-
-  useEffect(
-    () => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setLoggedInUser(user);
-          //navigate("/");
-        } else {
-          setLoggedInUser(null);
-        }
-      });
-    } /*[navigate]*/
-  );
-
+export default function Navbar({ loggedInUser, setLoggedInUser, auth }) {
   return (
-    <BrowserRouter>
-      <AppBar position="static" style={{ backgroundColor: "#e1f4fa" }}>
-        <Toolbar style={{ justifyContent: "flex-start" }}>
+    <AppBar position="static" style={{ backgroundColor: "#e1f4fa" }}>
+      <Toolbar style={{ justifyContent: "flex-start" }}>
+        <Typography variant="body1" style={{ color: "#063846" }}>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            HOME
+          </Link>
+        </Typography>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <Typography variant="body1" style={{ color: "#063846" }}>
+          <Link to="/about" style={{ textDecoration: "none" }}>
+            ABOUT
+          </Link>
+        </Typography>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <Typography variant="body1" style={{ color: "#063846" }}>
+          <Link to="/faq" style={{ textDecoration: "none" }}>
+            FAQ
+          </Link>
+        </Typography>
+        <div style={{ flexGrow: 1 }}></div>
+        {loggedInUser ? (
           <Typography variant="body1" style={{ color: "#063846" }}>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              HOME
+            <Link
+              to="/"
+              onClick={() =>
+                signOut(auth).then(() => {
+                  setLoggedInUser(null);
+                })
+              }
+              style={{ textDecoration: "none" }}
+            >
+              LOG OUT
             </Link>
           </Typography>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ) : (
           <Typography variant="body1" style={{ color: "#063846" }}>
-            <Link to="/about" style={{ textDecoration: "none" }}>
-              ABOUT
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              CREATE ACCOUNT OR LOG IN
             </Link>
           </Typography>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Typography variant="body1" style={{ color: "#063846" }}>
-            <Link to="/faq" style={{ textDecoration: "none" }}>
-              FAQ
-            </Link>
-          </Typography>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Typography variant="body1" style={{ color: "#063846" }}>
-            <Link to="/analysis" style={{ textDecoration: "none" }}>
-              ANALYSIS
-            </Link>
-          </Typography>
-          <div style={{ flexGrow: 1 }}></div>
-          {loggedInUser ? (
-            <Typography variant="body1" style={{ color: "#063846" }}>
-              <Link
-                to="/"
-                onClick={() =>
-                  signOut(auth).then(() => {
-                    setLoggedInUser(null);
-                  })
-                }
-                style={{ textDecoration: "none" }}
-              >
-                LOG OUT
-              </Link>
-            </Typography>
-          ) : (
-            <Typography variant="body1" style={{ color: "#063846" }}>
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                CREATE ACCOUNT OR LOG IN
-              </Link>
-            </Typography>
-          )}
-        </Toolbar>
-      </AppBar>
-      <Routing state={loggedInUser} />
-    </BrowserRouter>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 }
