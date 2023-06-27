@@ -24,14 +24,19 @@ export default class Analysis extends React.Component {
       this.setState({ daily: false, weekly: true });
     }
   }
+  shouldRenderLogo() {
+    const { pathname } = window.location;
+    return pathname === "/analysis";
+  }
   render() {
     const { daily, weekly } = this.state;
+    const shouldRender = this.shouldRenderLogo();
     //console.log(nutrition);
     return (
       <div>
         <div>
         <Outlet />
-        {!daily && !weekly && (
+        {!daily && !weekly && shouldRender &&(
           <div>
             <img src={logo} className="Home-logo" alt="logo" />
             <h3 className="Home-logo-title">Calorie Egghead</h3>
