@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fd9a2cb4.css",
+    "main.js": "/static/js/main.84bb98b3.js",
+    "static/media/dictionary.jpg": "/static/media/dictionary.35ef47d9762a9bbe03fe.jpg",
+    "static/media/cloud.jpg": "/static/media/cloud.9e6b0d6c1be04d7bc511.jpg",
+    "static/media/logo.png": "/static/media/logo.af523df796874dca8c22.png",
+    "index.html": "/index.html",
+    "main.fd9a2cb4.css.map": "/static/css/main.fd9a2cb4.css.map",
+    "main.84bb98b3.js.map": "/static/js/main.84bb98b3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fd9a2cb4.css",
+    "static/js/main.84bb98b3.js"
+  ]
+}

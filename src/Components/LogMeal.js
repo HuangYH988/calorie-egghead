@@ -105,7 +105,7 @@ export default function UploadForm({ logInUser }) {
       const response = await axios.get(
         `https://api.calorieninjas.com/v1/nutrition?query=${query}`,
         {
-          headers: { "X-Api-Key": process.env.FIREBASE_CALORIE_NINJA_API_KEY },
+          headers: { "X-Api-Key": process.env.REACT_APP_CALORIE_NINJA_API_KEY },
         }
       );
 
