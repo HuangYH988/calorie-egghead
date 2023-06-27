@@ -42,7 +42,7 @@ export default function Navbar({ loggedInUser, setLoggedInUser, auth }) {
         ) : (
           <Typography variant="body1" style={{ color: "#063846" }}>
             <Link to="/login" style={{ textDecoration: "none" }}>
-              CREATE ACCOUNT OR LOG IN
+              LOG IN
             </Link>
           </Typography>
         )}

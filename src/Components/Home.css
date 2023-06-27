@@ -68,16 +68,22 @@
   background-color: #eeeef0; /* Change background color on hover */
 }
 
+.Home-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
 .Home-buttons {
   background-color: #e1f4fa;
-  padding: 45px 55px;
+  padding: 18px 35px;
   border: 2.5px solid #063846;
   border-radius: 3px;
   text-decoration: none;
   position: relative;
-  top: 18vh;
   font-size: calc(11px + 1vmin);
-  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .Home-buttons:hover {

@@ -3,14 +3,14 @@
   align-items: center;
   flex-direction: column;
   border: 1px dotted black;
-  padding: 30px;
-  height: 22vmin;
-  width: 40vmin;
+  padding: 20px;
+  height: 18vh;
+  width: 36vh;
 }
 
 .image-upload-image {
-  height: 15vmin;
-  width: 15vmin;
+  height: 12vh;
+  width: 12vh;
   pointer-events: none;
   position: relative;
 }
@@ -38,15 +38,15 @@
 }
 
 .meal-input {
-  width: 10vw;
+  width: 22vh;
 }
 
 .item-input {
-  width: 10vw;
+  width: 13vh;
 }
 
 .quantity-input {
-  width: 4.5vw;
+  width: 5.8vh;
 }
 
 label {

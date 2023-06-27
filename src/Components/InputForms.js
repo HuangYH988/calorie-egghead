@@ -1,3 +1,5 @@
+import "./LogMeal.css";
+
 export default function InputForms({ formData, handleChange }) {
   return (
     <div className="form-container">
