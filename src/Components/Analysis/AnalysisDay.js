@@ -50,7 +50,10 @@ export default class AnalysisDay extends React.Component {
     const pieChartData = [
       {
         values: [percentageCal, 100 - percentageCal],
-        labels: ["Calories consumed: "+cal, "Maximum daily recommendation: 3200"],
+        labels: [
+          "Calories consumed: " + cal,
+          "Maximum daily recommendation: 3200",
+        ],
         domain: {
           x: [0, 0.48],
           y: [0.52, 1],
@@ -62,7 +65,10 @@ export default class AnalysisDay extends React.Component {
       },
       {
         values: [percentageCarbo, 100 - percentageCarbo],
-        labels: ["Carbohydrate consumed: "+carbo, "Maximum daily recommendation: 406g"],
+        labels: [
+          "Carbohydrate consumed: " + carbo,
+          "Maximum daily recommendation: 406g",
+        ],
         domain: {
           x: [0.52, 1],
           y: [0.52, 1],
@@ -74,7 +80,10 @@ export default class AnalysisDay extends React.Component {
       },
       {
         values: [percentageSatFat, 100 - percentageSatFat],
-        labels: ["Saturated fat consumed: "+satFat, "Maximum daily recommendation: 17g"],
+        labels: [
+          "Saturated fat consumed: " + satFat,
+          "Maximum daily recommendation: 17g",
+        ],
         domain: {
           x: [0, 0.48],
           y: [0, 0.48],
@@ -86,7 +95,10 @@ export default class AnalysisDay extends React.Component {
       },
       {
         values: [percentageChol, 100 - percentageChol],
-        labels: ["Cholestrol consumed: "+chol, "Maximum daily recommendation: 300mg"],
+        labels: [
+          "Cholestrol consumed: " + chol,
+          "Maximum daily recommendation: 300mg",
+        ],
         domain: {
           x: [0.52, 1],
           y: [0, 0.48],
@@ -119,7 +131,8 @@ export default class AnalysisDay extends React.Component {
 
         {
           font: {
-            size: 18,          },
+            size: 18,
+          },
           showarrow: false,
           text: `Carbo-`,
           width: 80,
@@ -172,7 +185,18 @@ export default class AnalysisDay extends React.Component {
     return (
       <div>
         <h1>Daily nutritional analysis</h1>
-        <Plot data={chartData} layout={layout} />
+        <div className="Daily-display">
+          <div>
+            <Plot data={chartData} layout={layout} />
+          </div>
+          <div>
+            Daily recommended maximum intake: <br />
+            Calorie: {RECOMMENDED_CALORIE}cal <br />
+            Carbohydrate: {RECOMMENDED_CARBO}g <br />
+            Saturated Fat: {RECOMMENDED_SATURATED}g <br />
+            Cholestrol: {RECOMMENDED_CHOLESTROL}mg
+          </div>
+        </div>
         <br />
       </div>
     );

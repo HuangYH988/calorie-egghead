@@ -66,3 +66,7 @@ a:hover {
   flex: 1;
   padding: 10px;
 }
+
+.Daily-display{
+  display: inline;
+}
