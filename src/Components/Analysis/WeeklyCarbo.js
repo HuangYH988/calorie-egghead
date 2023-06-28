@@ -58,7 +58,20 @@ export default class WeeklyCarbo extends React.Component {
     };
     const mondayNutrition = this.dataPlot(data[0], "monday");
     const tuesdayNutrition = this.dataPlot(data[1], "tuesday");
-    const nutrition = [mondayNutrition, tuesdayNutrition];
+    const wednesdayNutrition = this.dataPlot(data[0], "wednesday");
+    const thursdayNutrition = this.dataPlot(data[1], "thursday");
+    const fridayNutrition = this.dataPlot(data[1], "friday");
+    const saturdayNutrition = this.dataPlot(data[1], "saturday");
+    const sundayNutrition = this.dataPlot(data[0], "sunday");
+    const nutrition = [
+      mondayNutrition,
+      tuesdayNutrition,
+      wednesdayNutrition,
+      thursdayNutrition,
+      fridayNutrition,
+      saturdayNutrition,
+      sundayNutrition,
+    ];
     return (
       <div className="Analysis-plot">
         <Plot data={nutrition} layout={layout} />
