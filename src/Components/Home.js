@@ -17,15 +17,18 @@ export default function Home({ logInUser }) {
               <BiHappy />
             </h1>
           </div>
-          <div>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <div className="Home-buttons-container">
             <Link to="/logmeal" style={{ textDecoration: "none" }}>
               <button className="Home-buttons"> LOG MEAL</button>
             </Link>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Link to="/history" style={{ textDecoration: "none" }}>
-              <button className="Home-buttons"> HISTORY </button>
+              <button className="Home-buttons"> HISTORY &nbsp; </button>
             </Link>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Link to="/analysis" style={{ textDecoration: "none" }}>
               <button className="Home-buttons"> ANALYSIS </button>
             </Link>
