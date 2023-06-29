@@ -212,18 +212,20 @@ export default class Analysis extends React.Component {
           <Outlet />
           {shouldRender && (
             <div>
+              
               <h1>Daily nutritional analysis</h1>
               <div className="Daily-display">
                 <div>
                   <Plot data={chartData} layout={layout} />
                 </div>
-                <div>
+                <div className="Analysis-sidebar">
                   Daily recommended maximum intake: <br />
                   Calorie: {RECOMMENDED_CALORIE}cal <br />
                   Carbohydrate: {RECOMMENDED_CARBO}g <br />
                   Saturated Fat: {RECOMMENDED_SATURATED}g <br />
                   Cholestrol: {RECOMMENDED_CHOLESTROL}mg
                 </div>
+                
               </div>
             </div>
           )}
