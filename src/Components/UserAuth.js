@@ -20,7 +20,7 @@ export default function UserAuth() {
     }
     const user = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(auth.currentUser, { displayName }).then(() => {
-      console.log("Profile updated successfully.");
+      //console.log("Profile updated successfully.");
       setDisplayName("");
       setEmail("");
       setPassword("");

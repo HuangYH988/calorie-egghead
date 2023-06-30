@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-
+import { USER_CURRENT } from "./App";
 import Home from "./Home";
 import About from "./About";
 import FAQ from "./FAQ";
@@ -13,13 +13,13 @@ import AnalysisWeek from "./Analysis/AnalysisWeek";
 import * as Items from "./Data/DummyData";
 import WeeklyCarbo from "./Analysis/WeeklyCarbo";
 
-export default function Routing({ loggedInUser }) {
+export default function Routing() {
   const dummyData = Items.foodItem1.items;
   const dummyData2 = Items.foodItem2.items;
   const weekData = [dummyData, dummyData2];
   return (
     <Routes>
-      <Route path="/" element={<Home logInUser={loggedInUser} />} />
+      <Route path="/" element={<Home logInUser={USER_CURRENT} />} />
       <Route path="/about" element={<About />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/analysis" element={<Analysis data={dummyData} />}>
@@ -28,8 +28,8 @@ export default function Routing({ loggedInUser }) {
         </Route>
       </Route>
       <Route path="/login" element={<UserAuth />} />
-      <Route path="/logmeal" element={<LogMeal logInUser={loggedInUser} />} />
-      <Route path="/history" element={<Hist logInUser={loggedInUser} />} />
+      <Route path="/logmeal" element={<LogMeal logInUser={USER_CURRENT} />} />
+      <Route path="/history" element={<Hist logInUser={USER_CURRENT} />} />
       <Route path="/*" element={<ErrorPage />} />
     </Routes>
   );

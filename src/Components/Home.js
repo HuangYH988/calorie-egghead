@@ -17,11 +17,7 @@ export default function Home({ logInUser }) {
               <BiHappy />
             </h1>
           </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+          
           <div className="Home-buttons-container">
             <Link to="/logmeal" style={{ textDecoration: "none" }}>
               <button className="Home-buttons"> LOG MEAL</button>

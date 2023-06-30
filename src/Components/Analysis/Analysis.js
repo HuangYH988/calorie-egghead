@@ -3,11 +3,19 @@ import "../App.css";
 import { Button } from "@mui/material";
 import { Link, Outlet } from "react-router-dom";
 import Plot from "react-plotly.js";
+import { ref, onValue } from "firebase/database";
+import { database } from "../../firebase";
+import { USER_CURRENT } from "../App";
 
 const RECOMMENDED_CALORIE = 3200;
 const RECOMMENDED_CARBO = 406;
 const RECOMMENDED_SATURATED = 17;
 const RECOMMENDED_CHOLESTROL = 300;
+const date = new Date();
+const year = date.getFullYear();
+const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+const day = String(date.getDate()).padStart(2, '0');
+const formattedDate = `${year}-${month}-${day}`;
 
 export default class Analysis extends React.Component {
   constructor(props) {
@@ -15,6 +23,7 @@ export default class Analysis extends React.Component {
     this.state = {
       daily: true,
       weekly: false,
+      datas: [],
     };
   }
   onClickDaily() {
@@ -76,10 +85,13 @@ export default class Analysis extends React.Component {
           x: [0, 0.48],
           y: [0.52, 1],
         },
-        hoverinfo: ["test1", "test2"],
+
         name: "Daily calories consumed",
         hole: 0.4,
         type: "pie",
+        marker: {
+          colors: ["orange", "blue"],
+        },
       },
       {
         values: [percentageCarbo, 100 - percentageCarbo],
@@ -91,10 +103,13 @@ export default class Analysis extends React.Component {
           x: [0.52, 1],
           y: [0.52, 1],
         },
-        hoverinfo: ["test1", "test2"],
+
         name: "Daily carbohydrate consumed",
         hole: 0.4,
         type: "pie",
+        marker: {
+          colors: ["purple", "blue"],
+        },
       },
       {
         values: [percentageSatFat, 100 - percentageSatFat],
@@ -106,10 +121,13 @@ export default class Analysis extends React.Component {
           x: [0, 0.48],
           y: [0, 0.48],
         },
-        hoverinfo: ["test1", "test2"],
+
         name: "Daily saturated fat consumed",
         hole: 0.4,
         type: "pie",
+        marker: {
+          colors: ["darkred", "blue"],
+        },
       },
       {
         values: [percentageChol, 100 - percentageChol],
@@ -121,23 +139,71 @@ export default class Analysis extends React.Component {
           x: [0.52, 1],
           y: [0, 0.48],
         },
-        hoverinfo: ["test1", "test2"],
+
         name: "Daily cholestrol consumed",
         hole: 0.4,
         type: "pie",
+        marker: {
+          colors: ["lightgreen", "blue"],
+        },
       },
     ];
 
     return pieChartData;
   }
+
+  // Hide daily graphs when weekly graph is selected
   shouldRender() {
     const { pathname } = window.location;
     return pathname === "/analysis";
   }
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData = async () => {
+    try {
+      const messagesRef = ref(database); // Reference to the desired location in the Realtime Database
+
+      // Attach an event listener to listen for changes in the data
+      onValue(messagesRef, (snapshot) => {
+        const fetchedData = snapshot.val();
+        const filteredData = Object.values(fetchedData.Logs).filter(
+          // Retrieve items that are realted to the logged in user and is from today
+          (item) => (item.authorEmail === USER_CURRENT.email && item.date===formattedDate) 
+        );
+        
+        
+        let filteredData2 = [];
+        for (let i = 0; i < filteredData.length; i++) {
+          if (filteredData[i].data) {
+            filteredData2.push(filteredData[i]);
+          }
+        }
+        this.setState({ datas: filteredData2 });
+      });
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  // Convert Firebase data into array format for graph plot
+  convertData() {
+    const data = this.state.datas;
+    const fetchedData = data.map((item) => item.data);
+    let newData = [];
+    for (let i = 0; i < fetchedData.length; i++) {
+      for (let j = 0; j < fetchedData[i].length; j++) {
+        newData.push(fetchedData[i][j]);
+      }
+    }
+    return newData;
+  }
   render() {
     const { daily, weekly } = this.state;
     const shouldRender = this.shouldRender();
-    const { data } = this.props;
+    const data = this.convertData();
+
     const chartData = this.dataPlot(data);
     const layout = {
       title: "Percentage of daily nutritions consumed",
@@ -210,22 +276,23 @@ export default class Analysis extends React.Component {
       <div>
         <div>
           <Outlet />
+
           {shouldRender && (
-            <div>
-              
-              <h1>Daily nutritional analysis</h1>
-              <div className="Daily-display">
+
+            <div className="Analysis-container">
+              <div className="Analysis-sidebar">
                 <div>
-                  <Plot data={chartData} layout={layout} />
-                </div>
-                <div className="Analysis-sidebar">
-                  Daily recommended maximum intake: <br />
+                  <h3>Daily recommended maximum intake:</h3>
+
                   Calorie: {RECOMMENDED_CALORIE}cal <br />
                   Carbohydrate: {RECOMMENDED_CARBO}g <br />
                   Saturated Fat: {RECOMMENDED_SATURATED}g <br />
                   Cholestrol: {RECOMMENDED_CHOLESTROL}mg
                 </div>
                 
+              </div>
+              <div>
+                <Plot data={chartData} layout={layout} />
               </div>
             </div>
           )}
