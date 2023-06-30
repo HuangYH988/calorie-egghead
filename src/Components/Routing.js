@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { loggedInUser } from "./App";
+import { USER_CURRENT } from "./App";
 import Home from "./Home";
 import About from "./About";
 import FAQ from "./FAQ";
@@ -19,7 +19,7 @@ export default function Routing() {
   const weekData = [dummyData, dummyData2];
   return (
     <Routes>
-      <Route path="/" element={<Home logInUser={loggedInUser} />} />
+      <Route path="/" element={<Home logInUser={USER_CURRENT} />} />
       <Route path="/about" element={<About />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/analysis" element={<Analysis data={dummyData} />}>
@@ -28,8 +28,8 @@ export default function Routing() {
         </Route>
       </Route>
       <Route path="/login" element={<UserAuth />} />
-      <Route path="/logmeal" element={<LogMeal logInUser={loggedInUser} />} />
-      <Route path="/history" element={<Hist logInUser={loggedInUser} />} />
+      <Route path="/logmeal" element={<LogMeal logInUser={USER_CURRENT} />} />
+      <Route path="/history" element={<Hist logInUser={USER_CURRENT} />} />
       <Route path="/*" element={<ErrorPage />} />
     </Routes>
   );
