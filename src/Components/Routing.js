@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-
+import { loggedInUser } from "./App";
 import Home from "./Home";
 import About from "./About";
 import FAQ from "./FAQ";
@@ -13,7 +13,7 @@ import AnalysisWeek from "./Analysis/AnalysisWeek";
 import * as Items from "./Data/DummyData";
 import WeeklyCarbo from "./Analysis/WeeklyCarbo";
 
-export default function Routing({ loggedInUser }) {
+export default function Routing() {
   const dummyData = Items.foodItem1.items;
   const dummyData2 = Items.foodItem2.items;
   const weekData = [dummyData, dummyData2];

@@ -3,6 +3,7 @@ import "../App.css";
 import { Button } from "@mui/material";
 import { Link, Outlet } from "react-router-dom";
 import Plot from "react-plotly.js";
+import { FetchedData } from "../Data/FetchedData";
 
 const RECOMMENDED_CALORIE = 3200;
 const RECOMMENDED_CARBO = 406;
@@ -76,10 +77,13 @@ export default class Analysis extends React.Component {
           x: [0, 0.48],
           y: [0.52, 1],
         },
-        hoverinfo: ["test1", "test2"],
+        
         name: "Daily calories consumed",
         hole: 0.4,
         type: "pie",
+        marker: {
+          colors: ['orange', 'blue'],
+        },
       },
       {
         values: [percentageCarbo, 100 - percentageCarbo],
@@ -91,10 +95,13 @@ export default class Analysis extends React.Component {
           x: [0.52, 1],
           y: [0.52, 1],
         },
-        hoverinfo: ["test1", "test2"],
+        
         name: "Daily carbohydrate consumed",
         hole: 0.4,
         type: "pie",
+        marker: {
+          colors: ['purple', 'blue'],
+        },
       },
       {
         values: [percentageSatFat, 100 - percentageSatFat],
@@ -106,10 +113,13 @@ export default class Analysis extends React.Component {
           x: [0, 0.48],
           y: [0, 0.48],
         },
-        hoverinfo: ["test1", "test2"],
+       
         name: "Daily saturated fat consumed",
         hole: 0.4,
         type: "pie",
+        marker: {
+          colors: ['darkred', 'blue'],
+        },
       },
       {
         values: [percentageChol, 100 - percentageChol],
@@ -121,10 +131,13 @@ export default class Analysis extends React.Component {
           x: [0.52, 1],
           y: [0, 0.48],
         },
-        hoverinfo: ["test1", "test2"],
+       
         name: "Daily cholestrol consumed",
         hole: 0.4,
         type: "pie",
+        marker: {
+          colors: ['lightgreen', 'blue'],
+        },
       },
     ];
 
@@ -210,20 +223,20 @@ export default class Analysis extends React.Component {
       <div>
         <div>
           <Outlet />
+          <FetchedData />
           {shouldRender && (
-            <div>
-              <h1>Daily nutritional analysis</h1>
-              <div className="Daily-display">
+            <div className="Analysis-container">
+              <div className="Analysis-sidebar">
                 <div>
-                  <Plot data={chartData} layout={layout} />
-                </div>
-                <div>
-                  Daily recommended maximum intake: <br />
+                  <h3>Daily recommended maximum intake:</h3>
                   Calorie: {RECOMMENDED_CALORIE}cal <br />
                   Carbohydrate: {RECOMMENDED_CARBO}g <br />
                   Saturated Fat: {RECOMMENDED_SATURATED}g <br />
                   Cholestrol: {RECOMMENDED_CHOLESTROL}mg
                 </div>
+              </div>
+              <div>
+                <Plot data={chartData} layout={layout} />
               </div>
             </div>
           )}

@@ -2,8 +2,9 @@ import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
+import { loggedInUser } from "./App";
 
-export default function Navbar({ loggedInUser, setLoggedInUser, auth }) {
+export default function Navbar({setLoggedInUser, auth }) {
   return (
     <AppBar position="static" style={{ backgroundColor: "#e1f4fa" }}>
       <Toolbar style={{ justifyContent: "flex-start" }}>

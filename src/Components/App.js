@@ -7,20 +7,24 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Routing from "./Routing";
 
+export let loggedInUser = null; 
+
 export default function App() {
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [loggedInUserState, setLoggedInUserState] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setLoggedInUser(user);
+        loggedInUser = user; // Update the exported variable
+        setLoggedInUserState(user); // Update the local state
         if (location.pathname === "/") {
           navigate("/");
         }
       } else {
-        setLoggedInUser(null);
+        loggedInUser = null; // Update the exported variable
+        setLoggedInUserState(null); // Update the local state
       }
     });
   }, [navigate, location.pathname]);
@@ -29,11 +33,11 @@ export default function App() {
     <div className="App">
       <header className="App-header">
         <Navbar
-          loggedInUser={loggedInUser}
-          setLoggedInUser={setLoggedInUser}
+          
+          setLoggedInUser={setLoggedInUserState}
           auth={auth}
         />
-        <Routing loggedInUser={loggedInUser} />
+        <Routing />
       </header>
     </div>
   );
