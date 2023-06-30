@@ -2,6 +2,15 @@ import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Button } from "@mui/material";
 import Plot from "react-plotly.js";
+import { ref, onValue } from "firebase/database";
+import { database } from "../../firebase";
+import { USER_CURRENT } from "../App";
+
+const date = new Date();
+const year = date.getFullYear();
+const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
+const day = String(date.getDate()).padStart(2, "0");
+const formattedDate = `${year}-${month}-${day}`;
 
 export default class AnalysisWeek extends React.Component {
   constructor(props) {
@@ -9,6 +18,7 @@ export default class AnalysisWeek extends React.Component {
     this.state = {
       cal: true,
       carbo: false,
+      datas: [],
     };
   }
   onClickCal() {
@@ -62,10 +72,53 @@ export default class AnalysisWeek extends React.Component {
     const { pathname } = window.location;
     return pathname === "/analysis/weekly";
   }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+  fetchData = async () => {
+    try {
+      const messagesRef = ref(database); // Reference to the desired location in the Realtime Database
+
+      // Attach an event listener to listen for changes in the data
+      onValue(messagesRef, (snapshot) => {
+        const fetchedData = snapshot.val();
+        const filteredData = Object.values(fetchedData.Logs).filter(
+          // Retrieve items that are realted to the logged in user and is from today
+          (item) =>
+            item.authorEmail === USER_CURRENT.email &&
+            item.date === formattedDate
+        );
+
+        let filteredData2 = [];
+        for (let i = 0; i < filteredData.length; i++) {
+          if (filteredData[i].data) {
+            filteredData2.push(filteredData[i]);
+          }
+        }
+        this.setState({ datas: filteredData2 });
+      });
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  // Convert Firebase data into array format for graph plot
+  convertData() {
+    const data = this.state.datas;
+    const fetchedData = data.map((item) => item.data);
+    let newData = [];
+    for (let i = 0; i < fetchedData.length; i++) {
+      for (let j = 0; j < fetchedData[i].length; j++) {
+        newData.push(fetchedData[i][j]);
+      }
+    }
+    return newData;
+  }
   render() {
     const { cal, carbo } = this.state;
     const shouldRender = this.shouldRender();
-    const { data } = this.props;
+    const data = [this.convertData(), this.convertData()];
     const layout = {
       title: "Weekly calories and sodium intake",
       height: 700,

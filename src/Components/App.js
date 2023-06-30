@@ -19,6 +19,7 @@ export default function App() {
       if (user) {
         USER_CURRENT=user;
         setLoggedInUser(user);
+        
         if (location.pathname === "/") {
           navigate("/");
         }
