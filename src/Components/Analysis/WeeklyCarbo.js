@@ -1,6 +1,4 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { Button } from "@mui/material";
 import Plot from "react-plotly.js";
 import { ref, onValue } from "firebase/database";
 import { database } from "../../firebase";
@@ -12,30 +10,17 @@ const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-i
 const day = String(date.getDate()).padStart(2, "0");
 const formattedDate = `${year}-${month}-${day}`;
 
-export default class AnalysisWeek extends React.Component {
+export default class WeeklyCarbo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cal: true,
-      carbo: false,
       datas: [],
     };
   }
-  onClickCal() {
-    const { cal } = this.state;
-    if (!cal) {
-      this.setState({ cal: true, carbo: false });
-    }
-  }
-  onClickCarbo() {
-    const { carbo } = this.state;
-    if (!carbo) {
-      this.setState({ cal: false, carbo: true });
-    }
-  }
   dataPlot(data, day) {
-    let cal = 0;
-    let sodium = 0;
+    let carbo = 0;
+    let satFat = 0;
+    let chol = 0;
 
     const colorMap = {
       monday: "rgba(255,0,50,0.6)",
@@ -49,15 +34,16 @@ export default class AnalysisWeek extends React.Component {
 
     let color = colorMap[day] || "rgba(55,128,191,0.6)";
     for (let i = 0; i < data.length; i++) {
-      cal += data[i].calories;
-      sodium += data[i].sodium_mg;
+      carbo += data[i].carbohydrates_total_g;
+      satFat += data[i].fat_saturated_g;
+      chol += data[i].cholesterol_mg;
     }
     const nut = {
-      x: ["calories", "sodium"],
-      y: [cal, sodium],
+      x: ["carbohydrate", "saturated fat", "cholesterol"],
+      y: [carbo, satFat, chol],
       name: "Intake on " + day,
       orientation: "v",
-      text: ["", "unit: mg"].map(String),
+      text: ["unit: g", "unit: g", "unit: mg"].map(String),
       textposition: "auto",
       marker: {
         color,
@@ -67,10 +53,6 @@ export default class AnalysisWeek extends React.Component {
     };
 
     return nut;
-  }
-  shouldRender() {
-    const { pathname } = window.location;
-    return pathname === "/analysis/weekly";
   }
 
   componentDidMount() {
@@ -115,12 +97,11 @@ export default class AnalysisWeek extends React.Component {
     }
     return newData;
   }
+
   render() {
-    const { cal, carbo } = this.state;
-    const shouldRender = this.shouldRender();
     const data = [this.convertData(), this.convertData()];
     const layout = {
-      title: "Weekly calories and sodium intake",
+      title: "Weekly nutrition intake",
       height: 700,
       width: 1000,
       barmode: "group",
@@ -142,39 +123,8 @@ export default class AnalysisWeek extends React.Component {
       sundayNutrition,
     ];
     return (
-      <div>
-        <h1>Nutritional analysis by week</h1>
-        <div className="Analysis-container">
-          <div className="Analysis-sidebar">
-            <Button
-              variant="contained"
-              disabled={cal}
-              onClick={() => this.onClickCal()}
-            >
-              <Link to="/analysis/weekly" style={{ textDecoration: "none" }}>
-                Calories+Sodium intake
-              </Link>
-            </Button>
-            <Button
-              variant="contained"
-              disabled={carbo}
-              onClick={() => this.onClickCarbo()}
-            >
-              <Link
-                to="/analysis/weekly/others"
-                style={{ textDecoration: "none" }}
-              >
-                Carbo, Fat and Cholesterol
-              </Link>
-            </Button>
-          </div>
-          <Outlet />
-          {shouldRender && (
-            <div className="Analysis-plot">
-              <Plot data={nutrition} layout={layout} />
-            </div>
-          )}
-        </div>
+      <div className="Analysis-plot">
+        <Plot data={nutrition} layout={layout} />
       </div>
     );
   }
