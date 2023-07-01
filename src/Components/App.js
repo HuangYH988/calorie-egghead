@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Routing from "./Routing";
 
-export let USER_CURRENT =null;
+export let USER_CURRENT = null;
 
 export default function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -17,14 +17,13 @@ export default function App() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        USER_CURRENT=user;
+        USER_CURRENT = user;
         setLoggedInUser(user);
-        
         if (location.pathname === "/") {
           navigate("/");
         }
       } else {
-        USER_CURRENT=null;
+        USER_CURRENT = null;
         setLoggedInUser(null);
       }
     });
@@ -38,7 +37,7 @@ export default function App() {
           setLoggedInUser={setLoggedInUser}
           auth={auth}
         />
-        <Routing/>
+        <Routing />
       </header>
     </div>
   );

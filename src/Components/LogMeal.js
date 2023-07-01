@@ -109,11 +109,17 @@ export default function UploadForm({ logInUser }) {
         }
       );
 
+      const dateObj = new Date(formData.sel_DateTime);
+      const dayOfWeek = dateObj.toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+
       const logsListRef = databaseRef(database, LOGS_FOLDER_NAME);
       const newLogRef = push(logsListRef);
       set(newLogRef, {
         authorEmail: logInUser.email,
         date: formData.sel_DateTime.format("YYYY-MM-DD"),
+        dayOfWeek: dayOfWeek,
         imageLink: downloadUrl,
         description: formData.meal_desc,
         data: response.data.items,
