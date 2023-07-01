@@ -101,10 +101,12 @@ export default class WeeklyCarbo extends React.Component {
   render() {
     const data = [this.convertData(), this.convertData()];
     const layout = {
-      title: "Weekly nutrition intake",
+      title: "Weekly Nutrition Intake",
       height: 700,
       width: 1000,
       barmode: "group",
+      paper_bgcolor: "#f5fbfd",
+      plot_bgcolor: "#e1f4fa",
     };
     const mondayNutrition = this.dataPlot(data[0], "monday");
     const tuesdayNutrition = this.dataPlot(data[1], "tuesday");
@@ -123,7 +125,7 @@ export default class WeeklyCarbo extends React.Component {
       sundayNutrition,
     ];
     return (
-      <div className="Analysis-plot">
+      <div>
         <Plot data={nutrition} layout={layout} />
       </div>
     );
