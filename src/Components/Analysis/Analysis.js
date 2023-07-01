@@ -275,6 +275,7 @@ export default class Analysis extends React.Component {
     return (
       <div>
         <div>
+          <h1>Daily nutritional intake</h1>
           <Outlet />
 
           {shouldRender && (

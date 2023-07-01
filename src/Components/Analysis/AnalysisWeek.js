@@ -7,10 +7,12 @@ import { database } from "../../firebase";
 import { USER_CURRENT } from "../App";
 
 const date = new Date();
-const year = date.getFullYear();
-const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
-const day = String(date.getDate()).padStart(2, "0");
-const formattedDate = `${year}-${month}-${day}`;
+const YEAR = date.getFullYear();
+const MONTH = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
+const DAY = String(date.getDate()).padStart(2, "0");
+const dayOfWeekNumber = date.getDay();
+const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const dayOfWeek = daysOfWeek[dayOfWeekNumber];
 
 export default class AnalysisWeek extends React.Component {
   constructor(props) {
@@ -18,7 +20,7 @@ export default class AnalysisWeek extends React.Component {
     this.state = {
       cal: true,
       carbo: false,
-      datas: [],
+      datas: [[],[],[],[],[],[],[]],
     };
   }
   onClickCal() {
@@ -74,9 +76,39 @@ export default class AnalysisWeek extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    const dates = ['2023-07-01', '2023-07-02', '2023-07-03']; // Example array of date values
+    let year = YEAR;
+      let month = MONTH;
+      let day =DAY;
+    for(let i=0; i<=dayOfWeek;i++){
+      
+      if (i>=DAY){
+        let j = i -DAY;
+        if (MONTH ===2 ||MONTH ===4||MONTH ===6||MONTH ===8||MONTH ===9||MONTH ===11||MONTH ===1){
+          day = 31 - j;
+        }else if (MONTH ===5||MONTH ===7||MONTH ===10||MONTH ===12){
+          day = 30 - j;
+        }else {
+          if(YEAR%4===0 && YEAR!==2100){
+            day = 29 - j;
+          } else {
+            day = 28 - j;
+          }
+        }
+        if (MONTH ===1){
+          year = YEAR -1;
+          month = 12;
+        } else{
+          month = MONTH-1;
+        }
+      } else {
+        day = DAY -i;
+    }   
+    let formattedDate = `${year}-${month}-${day}`;
+      this.fetchData(formattedDate,i);
   }
-  fetchData = async () => {
+  }
+  fetchData = async (date,i) => {
     try {
       const messagesRef = ref(database); // Reference to the desired location in the Realtime Database
 
@@ -87,7 +119,7 @@ export default class AnalysisWeek extends React.Component {
           // Retrieve items that are realted to the logged in user and is from today
           (item) =>
             item.authorEmail === USER_CURRENT.email &&
-            item.date === formattedDate
+            item.date === date
         );
 
         let filteredData2 = [];
@@ -96,7 +128,14 @@ export default class AnalysisWeek extends React.Component {
             filteredData2.push(filteredData[i]);
           }
         }
-        this.setState({ datas: filteredData2 });
+        // Create a copy of the datas array
+const updatedDatas = [...this.state.datas];
+
+// Modify the desired part
+updatedDatas[i] = filteredData2;
+
+// Update the state with the modified array
+this.setState({ datas: updatedDatas });
       });
     } catch (error) {
       console.error("Error fetching data: ", error);
