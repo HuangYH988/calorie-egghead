@@ -80,19 +80,19 @@ export default class AnalysisWeek extends React.Component {
     let year = YEAR;
       let month = MONTH;
       let day =DAY;
-    for(let i=0; i<=dayOfWeek;i++){
+    for(let i=0; i<=dayOfWeekNumber;i++){
       
-      if (i>=DAY){
-        let j = i -DAY;
+      if (dayOfWeekNumber>=DAY){
+        let j = dayOfWeekNumber -DAY;
         if (MONTH ===2 ||MONTH ===4||MONTH ===6||MONTH ===8||MONTH ===9||MONTH ===11||MONTH ===1){
-          day = 31 - j;
+          day = 31 - j+i;
         }else if (MONTH ===5||MONTH ===7||MONTH ===10||MONTH ===12){
-          day = 30 - j;
+          day = 30 - j+i;
         }else {
           if(YEAR%4===0 && YEAR!==2100){
-            day = 29 - j;
+            day = 29 - j+i;
           } else {
-            day = 28 - j;
+            day = 28 - j+i;
           }
         }
         if (MONTH ===1){
