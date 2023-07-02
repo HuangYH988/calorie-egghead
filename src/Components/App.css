@@ -31,11 +31,31 @@ a:hover {
 .About-container-div {
   width: 75vmin;
   height: auto;
-  text-align: center;
+  text-align: left;
   display: block;
-  border: 2px solid #063846;
+  border: 0.1px solid #baebfb;
   overflow-wrap: break-word;
   font-size: calc(10px + 1vmin);
+  padding: 10px;
+}
+
+.About-container-div2 {
+  width: 75vmin;
+  height: auto;
+  text-align: left;
+  display: block;
+  border: 1px solid #063846;
+  overflow-wrap: break-word;
+  font-size: calc(10px + 1vmin);
+  padding: 10px;
+}
+
+.youtube-container {
+  max-width: 75vmin;
+  width: 75vmin;
+  height: auto;
+  border: 1px solid #063846;
+  overflow: scroll;
   padding: 10px;
 }
 
@@ -46,27 +66,23 @@ a:hover {
 }
 
 .FAQ-container-text {
-  width: 75vmin;
+  width: 80vmin;
   height: auto;
   text-align: left;
   display: block;
   overflow-wrap: break-word;
   font-size: calc(10px + 1vmin);
   padding: 10px;
+  font-weight: bold;
 }
 
 .FAQ-container-text2 {
-  width: 75vmin;
+  width: 80vmin;
   height: auto;
   text-align: left;
   display: block;
   overflow-wrap: break-word;
   font-size: calc(10px + 1vmin);
-}
-
-.youtube-container {
-  width: 75vmin;
-  height: 42vmin;
 }
 
 .Analysis-container {

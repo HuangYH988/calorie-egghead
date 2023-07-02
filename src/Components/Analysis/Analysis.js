@@ -7,7 +7,7 @@ import { ref, onValue } from "firebase/database";
 import { database } from "../../firebase";
 import { USER_CURRENT } from "../App";
 
-const RECOMMENDED_CALORIE = 2200;
+const RECOMMENDED_CALORIE = 2500;
 const RECOMMENDED_CARBO = 275;
 const RECOMMENDED_SATURATED = 17;
 const RECOMMENDED_CHOLESTROL = 250;
@@ -79,7 +79,7 @@ export default class Analysis extends React.Component {
         values: [percentageCal, 100 - percentageCal],
         labels: [
           "Calories consumed: " + cal,
-          "Maximum daily recommendation: 2200",
+          "Maximum daily recommendation: 2500",
         ],
         domain: {
           x: [0, 0.48],
