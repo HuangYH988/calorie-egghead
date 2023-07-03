@@ -5,16 +5,25 @@ import { database } from "../../firebase";
 import { USER_CURRENT } from "../App";
 
 const date = new Date();
-const year = date.getFullYear();
-const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
-const day = String(date.getDate()).padStart(2, "0");
-const formattedDate = `${year}-${month}-${day}`;
+const YEAR = date.getFullYear();
+const Month = date.getMonth() + 1; // Months are zero-indexed, so add 1
+const Day = date.getDate();
+const dayOfWeekNumber = date.getDay();
+const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 export default class WeeklyCarbo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      datas: [],
+      datas: [[], [], [], [], [], [], []],
     };
   }
   dataPlot(data, day) {
@@ -23,13 +32,13 @@ export default class WeeklyCarbo extends React.Component {
     let chol = 0;
 
     const colorMap = {
-      monday: "rgba(255,0,50,0.6)",
-      tuesday: "rgba(255,150,0,0.6)",
-      wednesday: "rgba(255,255,50,0.6)",
-      thursday: "rgba(0,255,50,0.6)",
-      friday: "rgba(50,50,255,0.6)",
-      saturday: "rgba(200,0,255,0.6)",
-      sunday: "rgba(150,50,200,0.6)",
+      Sunday: "rgba(255,0,50,0.6)",
+      Monday: "rgba(255,150,0,0.6)",
+      Tuesday: "rgba(255,255,50,0.6)",
+      Wednesday: "rgba(0,255,50,0.6)",
+      Thursday: "rgba(50,50,255,0.6)",
+      Friday: "rgba(200,0,255,0.6)",
+      Saturday: "rgba(150,50,200,0.6)",
     };
 
     let color = colorMap[day] || "rgba(55,128,191,0.6)";
@@ -56,9 +65,48 @@ export default class WeeklyCarbo extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    let year = YEAR;
+    let month = Month;
+    let day = Day;
+    for (let i = 0; i <= dayOfWeekNumber; i++) {
+      if (dayOfWeekNumber - i >= Day) {
+        let j = dayOfWeekNumber - i - Day;
+        if (
+          Month === 2 ||
+          Month === 4 ||
+          Month === 6 ||
+          Month === 8 ||
+          Month === 9 ||
+          Month === 11 ||
+          Month === 1
+        ) {
+          day = 31 - j;
+        } else if (Month === 5 || Month === 7 || Month === 10 || Month === 12) {
+          day = 30 - j;
+        } else {
+          if (YEAR % 4 === 0 && YEAR !== 2100) {
+            day = 29 - j;
+          } else {
+            day = 28 - j;
+          }
+        }
+        if (Month === 1) {
+          year = YEAR - 1;
+          month = 12;
+        } else {
+          month = Month - 1;
+        }
+      } else {
+        month = Month;
+        day = Day - (dayOfWeekNumber - i);
+      }
+      const MONTH = month.toString().padStart(2, "0");
+      const DAY = day.toString().padStart(2, "0");
+      let formattedDate = `${year}-${MONTH}-${DAY}`;
+      this.fetchData(formattedDate, i);
+    }
   }
-  fetchData = async () => {
+  fetchData = async (date, i) => {
     try {
       const messagesRef = ref(database); // Reference to the desired location in the Realtime Database
 
@@ -68,8 +116,7 @@ export default class WeeklyCarbo extends React.Component {
         const filteredData = Object.values(fetchedData.Logs).filter(
           // Retrieve items that are realted to the logged in user and is from today
           (item) =>
-            item.authorEmail === USER_CURRENT.email &&
-            item.date === formattedDate
+            item.authorEmail === USER_CURRENT.email && item.date === date
         );
 
         let filteredData2 = [];
@@ -78,7 +125,14 @@ export default class WeeklyCarbo extends React.Component {
             filteredData2.push(filteredData[i]);
           }
         }
-        this.setState({ datas: filteredData2 });
+        // Create a copy of the datas array
+        const updatedDatas = [...this.state.datas];
+
+        // Modify the desired part
+        updatedDatas[i] = filteredData2;
+
+        // Update the state with the modified array
+        this.setState({ datas: updatedDatas });
       });
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -86,8 +140,8 @@ export default class WeeklyCarbo extends React.Component {
   };
 
   // Convert Firebase data into array format for graph plot
-  convertData() {
-    const data = this.state.datas;
+  convertData(day) {
+    const data = this.state.datas[day];
     const fetchedData = data.map((item) => item.data);
     let newData = [];
     for (let i = 0; i < fetchedData.length; i++) {
@@ -99,7 +153,15 @@ export default class WeeklyCarbo extends React.Component {
   }
 
   render() {
-    const data = [this.convertData(), this.convertData()];
+    const data = [
+      this.convertData(0),
+      this.convertData(1),
+      this.convertData(2),
+      this.convertData(3),
+      this.convertData(4),
+      this.convertData(5),
+      this.convertData(6),
+    ];
     const layout = {
       title: "Weekly Nutrition Intake",
       height: 700,
@@ -108,21 +170,21 @@ export default class WeeklyCarbo extends React.Component {
       paper_bgcolor: "#f5fbfd",
       plot_bgcolor: "#e1f4fa",
     };
-    const mondayNutrition = this.dataPlot(data[0], "monday");
-    const tuesdayNutrition = this.dataPlot(data[1], "tuesday");
-    const wednesdayNutrition = this.dataPlot(data[0], "wednesday");
-    const thursdayNutrition = this.dataPlot(data[1], "thursday");
-    const fridayNutrition = this.dataPlot(data[1], "friday");
-    const saturdayNutrition = this.dataPlot(data[1], "saturday");
-    const sundayNutrition = this.dataPlot(data[0], "sunday");
+    const sundayNutrition = this.dataPlot(data[0], daysOfWeek[0]);
+    const mondayNutrition = this.dataPlot(data[1], daysOfWeek[1]);
+    const tuesdayNutrition = this.dataPlot(data[2], daysOfWeek[2]);
+    const wednesdayNutrition = this.dataPlot(data[3], daysOfWeek[3]);
+    const thursdayNutrition = this.dataPlot(data[4], daysOfWeek[4]);
+    const fridayNutrition = this.dataPlot(data[5], daysOfWeek[5]);
+    const saturdayNutrition = this.dataPlot(data[6], daysOfWeek[6]);
     const nutrition = [
+      sundayNutrition,
       mondayNutrition,
       tuesdayNutrition,
       wednesdayNutrition,
       thursdayNutrition,
       fridayNutrition,
       saturdayNutrition,
-      sundayNutrition,
     ];
     return (
       <div>
