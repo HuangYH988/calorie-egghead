@@ -28,8 +28,11 @@ export default function UploadForm({ logInUser }) {
   const [SubmitFlag, setSubmitFlag] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [sel_DateTime, setDateTime] = useState(
+    dayjs(currentDate.toISOString().slice(0, 16))
+  );
+
   const [formData, setFormData] = useState({
-    sel_DateTime: dayjs(currentDate.toISOString().slice(0, 16)),
     meal_desc: "",
     item1: "",
     quantity1: "",
@@ -54,6 +57,11 @@ export default function UploadForm({ logInUser }) {
       ...prevFormData,
       [id]: value,
     }));
+  };
+
+  const handleDateTimeChange = (newValue) => {
+    setDateTime(newValue);
+    console.log(sel_DateTime);
   };
 
   const handleFileUpload = (event) => {
@@ -109,7 +117,7 @@ export default function UploadForm({ logInUser }) {
         }
       );
 
-      const dateObj = new Date(formData.sel_DateTime);
+      const dateObj = new Date(sel_DateTime);
       const dayOfWeek = dateObj.toLocaleDateString("en-US", {
         weekday: "long",
       });
@@ -118,7 +126,7 @@ export default function UploadForm({ logInUser }) {
       const newLogRef = push(logsListRef);
       set(newLogRef, {
         authorEmail: logInUser.email,
-        date: formData.sel_DateTime.format("YYYY-MM-DD"),
+        date: sel_DateTime.format("YYYY-MM-DD"),
         dayOfWeek: dayOfWeek,
         imageLink: downloadUrl,
         description: formData.meal_desc,
@@ -155,7 +163,8 @@ export default function UploadForm({ logInUser }) {
           <MobileDateTimePicker
             label="Input Date & Time of Food Intake"
             defaultValue={dayjs(currentDate.toISOString().slice(0, 16))}
-            value={formData.sel_DateTime}
+            value={sel_DateTime}
+            onChange={handleDateTimeChange}
           />
         </LocalizationProvider>
 
