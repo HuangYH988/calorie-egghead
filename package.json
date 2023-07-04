@@ -27,7 +27,11 @@
     "react-plotly.js": "^2.6.0",
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",
+<<<<<<< HEAD
     "typescript": "^5.1.5",
+=======
+    "react-youtube": "^10.1.0",
+>>>>>>> 06fce26e6dc3c8067c34bdfd7a4493803a9a0192
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -7,14 +7,14 @@ import { ref, onValue } from "firebase/database";
 import { database } from "../../firebase";
 import { USER_CURRENT } from "../App";
 
-const RECOMMENDED_CALORIE = 3200;
-const RECOMMENDED_CARBO = 406;
+const RECOMMENDED_CALORIE = 2500;
+const RECOMMENDED_CARBO = 275;
 const RECOMMENDED_SATURATED = 17;
-const RECOMMENDED_CHOLESTROL = 300;
+const RECOMMENDED_CHOLESTROL = 250;
 const date = new Date();
 const year = date.getFullYear();
-const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
-const day = String(date.getDate()).padStart(2, '0');
+const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
+const day = String(date.getDate()).padStart(2, "0");
 const formattedDate = `${year}-${month}-${day}`;
 
 export default class Analysis extends React.Component {
@@ -79,7 +79,7 @@ export default class Analysis extends React.Component {
         values: [percentageCal, 100 - percentageCal],
         labels: [
           "Calories consumed: " + cal,
-          "Maximum daily recommendation: 3200",
+          "Maximum daily recommendation: 2500",
         ],
         domain: {
           x: [0, 0.48],
@@ -97,7 +97,7 @@ export default class Analysis extends React.Component {
         values: [percentageCarbo, 100 - percentageCarbo],
         labels: [
           "Carbohydrate consumed: " + carbo,
-          "Maximum daily recommendation: 406g",
+          "Maximum daily recommendation: 275g",
         ],
         domain: {
           x: [0.52, 1],
@@ -133,7 +133,7 @@ export default class Analysis extends React.Component {
         values: [percentageChol, 100 - percentageChol],
         labels: [
           "Cholestrol consumed: " + chol,
-          "Maximum daily recommendation: 300mg",
+          "Maximum daily recommendation: 250mg",
         ],
         domain: {
           x: [0.52, 1],
@@ -170,10 +170,11 @@ export default class Analysis extends React.Component {
         const fetchedData = snapshot.val();
         const filteredData = Object.values(fetchedData.Logs).filter(
           // Retrieve items that are realted to the logged in user and is from today
-          (item) => (item.authorEmail === USER_CURRENT.email && item.date===formattedDate) 
+          (item) =>
+            item.authorEmail === USER_CURRENT.email &&
+            item.date === formattedDate
         );
-        
-        
+
         let filteredData2 = [];
         for (let i = 0; i < filteredData.length; i++) {
           if (filteredData[i].data) {
@@ -206,8 +207,8 @@ export default class Analysis extends React.Component {
 
     const chartData = this.dataPlot(data);
     const layout = {
-      title: "Percentage of daily nutritions consumed",
-
+      title: "% of Recommended Consumed Today",
+      paper_bgcolor: "#f5fbfd",
       annotations: [
         {
           font: {
@@ -284,10 +285,24 @@ export default class Analysis extends React.Component {
               <div className="Analysis-sidebar">
                 <div>
                   <h3>Daily recommended maximum intake:</h3>
+<<<<<<< HEAD
 
                   Calorie: {RECOMMENDED_CALORIE}cal <br />
                   Carbohydrate: {RECOMMENDED_CARBO}g <br />
                   Saturated Fat: {RECOMMENDED_SATURATED}g <br />
+=======
+                  <br />
+                  <br />
+                  Calories: {RECOMMENDED_CALORIE}kcal
+                  <br />
+                  <br />
+                  Carbohydrates: {RECOMMENDED_CARBO}g
+                  <br />
+                  <br />
+                  Saturated Fat: {RECOMMENDED_SATURATED}g
+                  <br />
+                  <br />
+>>>>>>> 06fce26e6dc3c8067c34bdfd7a4493803a9a0192
                   Cholestrol: {RECOMMENDED_CHOLESTROL}mg
                 </div>
                 
@@ -319,9 +334,6 @@ export default class Analysis extends React.Component {
                 Weekly
               </Link>
             </Button>
-          </div>
-          <div className="Analysis-main">
-            {/* Your main content goes here */}
           </div>
         </div>
       </div>

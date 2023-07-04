@@ -159,10 +159,15 @@ this.setState({ datas: updatedDatas });
     const shouldRender = this.shouldRender();
     const data = [this.convertData(), this.convertData()];
     const layout = {
-      title: "Weekly calories and sodium intake",
+      title: "Weekly Calories & Sodium Intake",
       height: 700,
       width: 1000,
       barmode: "group",
+      paper_bgcolor: "#f5fbfd",
+      plot_bgcolor: "#e1f4fa",
+      yaxis: {
+        range: [0, 5000], // Specify the desired range for the y-axis
+      },
     };
     const mondayNutrition = this.dataPlot(data[0], "monday");
     const tuesdayNutrition = this.dataPlot(data[1], "tuesday");
@@ -182,16 +187,20 @@ this.setState({ datas: updatedDatas });
     ];
     return (
       <div>
-        <h1>Nutritional analysis by week</h1>
         <div className="Analysis-container">
           <div className="Analysis-sidebar">
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
             <Button
               variant="contained"
               disabled={cal}
               onClick={() => this.onClickCal()}
             >
               <Link to="/analysis/weekly" style={{ textDecoration: "none" }}>
-                Calories+Sodium intake
+                Calories + Sodium intake
               </Link>
             </Button>
             <Button
@@ -209,7 +218,7 @@ this.setState({ datas: updatedDatas });
           </div>
           <Outlet />
           {shouldRender && (
-            <div className="Analysis-plot">
+            <div>
               <Plot data={nutrition} layout={layout} />
             </div>
           )}

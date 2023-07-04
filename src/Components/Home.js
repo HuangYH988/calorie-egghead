@@ -11,13 +11,15 @@ export default function Home({ logInUser }) {
       <h3 className="Home-logo-title">Calorie Egghead</h3>
       {logInUser ? (
         <div className="Home-div">
-          <div>
-            <h1 className="Home-logo-title-desc2">
-              Welcome, {logInUser.displayName}&nbsp;&nbsp;
-              <BiHappy />
-            </h1>
-          </div>
-          
+          <span className="Home-logo-title-desc2">
+            Welcome, {logInUser.displayName}&nbsp;&nbsp;
+            <BiHappy />
+          </span>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
           <div className="Home-buttons-container">
             <Link to="/logmeal" style={{ textDecoration: "none" }}>
               <button className="Home-buttons"> LOG MEAL</button>
