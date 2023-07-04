@@ -8,9 +8,9 @@ import { USER_CURRENT } from "../App";
 
 const date = new Date();
 const YEAR = date.getFullYear();
-const Month = date.getMonth() + 1; // Months are zero-indexed, so add 1
-const Day = date.getDate();
-const dayOfWeekNumber = date.getDay();
+const MONTH = date.getMonth() + 1; // Months are zero-indexed, so add 1
+const DAY = date.getDate();
+const DAYOFWEEK = date.getDay();
 const daysOfWeek = [
   "Sunday",
   "Monday",
@@ -27,6 +27,7 @@ export default class AnalysisWeek extends React.Component {
     this.state = {
       cal: true,
       carbo: false,
+      // datas is an empty array with 7 empty elements for 7 days of the week
       datas: [[], [], [], [], [], [], []],
     };
   }
@@ -59,8 +60,8 @@ export default class AnalysisWeek extends React.Component {
       Friday: "rgba(200,0,255,0.6)",
       Saturday: "rgba(150,50,200,0.6)",
     };
-
     let color = colorMap[day] || "rgba(55,128,191,0.6)";
+
     for (let i = 0; i < data.length; i++) {
       cal += data[i].calories;
       sodium += data[i].sodium_mg;
@@ -70,6 +71,7 @@ export default class AnalysisWeek extends React.Component {
       y: [cal, sodium],
       name: "Intake on " + day,
       orientation: "v",
+
       text: ["", "unit: mg"].map(String),
       textposition: "auto",
       marker: {
@@ -88,8 +90,8 @@ export default class AnalysisWeek extends React.Component {
 
   componentDidMount() {
     let year = YEAR;
-    let month = Month;
-    let day = Day;
+    let month = MONTH;
+    let day = DAY;
     let i = 0;
   
     const fetchDataAndUpdateState = async (date, index) => {
@@ -100,11 +102,12 @@ export default class AnalysisWeek extends React.Component {
   
         const fetchedData = snapshot.val();
         const filteredData = Object.values(fetchedData.Logs).filter(
-          // Retrieve items that are related to the logged-in user and are from today
+          // Retrieve items that are related to the logged-in user and are from specified
           (item) =>
             item.authorEmail === USER_CURRENT.email && item.date === date
         );
   
+        // Convert filteredData to correct format and filter out unwanted parts and empty arrays
         let filteredData2 = [];
         for (let j = 0; j < filteredData.length; j++) {
           if (filteredData[j].data) {
@@ -128,41 +131,49 @@ export default class AnalysisWeek extends React.Component {
     };
   
     const processNextIteration = async () => {
-      if (i <= dayOfWeekNumber) {
-        if (dayOfWeekNumber - i >= Day) {
-          let j = dayOfWeekNumber - i - Day;
+      // Works like a for loop condition
+      if (i <= DAYOFWEEK) {
+        // If previous days of the current week is in a previous month
+        if (DAYOFWEEK - i >= DAY) {
+          let j = DAYOFWEEK - i - DAY;
+          // If previous month has 31 days
           if (
-            Month === 2 ||
-            Month === 4 ||
-            Month === 6 ||
-            Month === 8 ||
-            Month === 9 ||
-            Month === 11 ||
-            Month === 1
+            MONTH === 2 ||
+            MONTH === 4 ||
+            MONTH === 6 ||
+            MONTH === 8 ||
+            MONTH === 9 ||
+            MONTH === 11 ||
+            MONTH === 1
           ) {
             day = 31 - j;
-          } else if (Month === 5 || Month === 7 || Month === 10 || Month === 12) {
+
+            // If previous month has 30 days
+          } else if (MONTH === 5 || MONTH === 7 || MONTH === 10 || MONTH === 12) {
             day = 30 - j;
           } else {
+            // A check for leap years, assuming this app will not take data dated in 1900 and before or 2200 and after 
             if (YEAR % 4 === 0 && YEAR !== 2100) {
               day = 29 - j;
             } else {
               day = 28 - j;
             }
           }
-          if (Month === 1) {
+
+          // If previous days of week dated back in the previous year
+          if (MONTH === 1) {
             year = YEAR - 1;
             month = 12;
           } else {
-            month = Month - 1;
+            month = MONTH - 1;
           }
         } else {
-          month = Month;
-          day = Day - (dayOfWeekNumber - i);
+          month = MONTH;
+          day = DAY - (DAYOFWEEK - i);
         }
-        const MONTH = month.toString().padStart(2, "0");
-        const DAY = day.toString().padStart(2, "0");
-        let formattedDate = `${year}-${MONTH}-${DAY}`;
+        const Month = month.toString().padStart(2, "0");
+        const Day = day.toString().padStart(2, "0");
+        let formattedDate = `${year}-${Month}-${Day}`;
         
         await fetchDataAndUpdateState(formattedDate, i);
         i++;
@@ -205,6 +216,9 @@ export default class AnalysisWeek extends React.Component {
       barmode: "group",
       paper_bgcolor: "#f5fbfd",
       plot_bgcolor: "#e1f4fa",
+      // xaxis: {
+      //   tickangle: -45, // Adjust the angle as needed
+      // },
       // yaxis: {
       //   range: [0, 5000], // Specify the desired range for the y-axis
       // },

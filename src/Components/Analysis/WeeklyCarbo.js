@@ -6,9 +6,9 @@ import { USER_CURRENT } from "../App";
 
 const date = new Date();
 const YEAR = date.getFullYear();
-const Month = date.getMonth() + 1; // Months are zero-indexed, so add 1
-const Day = date.getDate();
-const dayOfWeekNumber = date.getDay();
+const MONTH = date.getMonth() + 1; // Months are zero-indexed, so add 1
+const DAY = date.getDate();
+const DAYOFWEEK = date.getDay();
 const daysOfWeek = [
   "Sunday",
   "Monday",
@@ -66,8 +66,8 @@ export default class WeeklyCarbo extends React.Component {
 
   componentDidMount() {
     let year = YEAR;
-    let month = Month;
-    let day = Day;
+    let month = MONTH;
+    let day = DAY;
     let i = 0;
   
     const fetchDataAndUpdateState = async (date, index) => {
@@ -106,20 +106,20 @@ export default class WeeklyCarbo extends React.Component {
     };
   
     const processNextIteration = async () => {
-      if (i <= dayOfWeekNumber) {
-        if (dayOfWeekNumber - i >= Day) {
-          let j = dayOfWeekNumber - i - Day;
+      if (i <= DAYOFWEEK) {
+        if (DAYOFWEEK - i >= DAY) {
+          let j = DAYOFWEEK - i - DAY;
           if (
-            Month === 2 ||
-            Month === 4 ||
-            Month === 6 ||
-            Month === 8 ||
-            Month === 9 ||
-            Month === 11 ||
-            Month === 1
+            MONTH === 2 ||
+            MONTH === 4 ||
+            MONTH === 6 ||
+            MONTH === 8 ||
+            MONTH === 9 ||
+            MONTH === 11 ||
+            MONTH === 1
           ) {
             day = 31 - j;
-          } else if (Month === 5 || Month === 7 || Month === 10 || Month === 12) {
+          } else if (MONTH === 5 || MONTH === 7 || MONTH === 10 || MONTH === 12) {
             day = 30 - j;
           } else {
             if (YEAR % 4 === 0 && YEAR !== 2100) {
@@ -128,19 +128,19 @@ export default class WeeklyCarbo extends React.Component {
               day = 28 - j;
             }
           }
-          if (Month === 1) {
+          if (MONTH === 1) {
             year = YEAR - 1;
             month = 12;
           } else {
-            month = Month - 1;
+            month = MONTH - 1;
           }
         } else {
-          month = Month;
-          day = Day - (dayOfWeekNumber - i);
+          month = MONTH;
+          day = DAY - (DAYOFWEEK - i);
         }
-        const MONTH = month.toString().padStart(2, "0");
-        const DAY = day.toString().padStart(2, "0");
-        let formattedDate = `${year}-${MONTH}-${DAY}`;
+        const Month = month.toString().padStart(2, "0");
+        const Day = day.toString().padStart(2, "0");
+        let formattedDate = `${year}-${Month}-${Day}`;
         
         await fetchDataAndUpdateState(formattedDate, i);
         i++;
