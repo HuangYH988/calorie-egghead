@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Button } from "@mui/material";
 import Plot from "react-plotly.js";
-import { ref, onValue } from "firebase/database";
+import { ref, get } from "firebase/database";
 import { database } from "../../firebase";
 import { USER_CURRENT } from "../App";
 
@@ -30,6 +30,8 @@ export default class AnalysisWeek extends React.Component {
       datas: [[], [], [], [], [], [], []],
     };
   }
+
+  // Toggles between default(calorie page) and carboand others page
   onClickCal() {
     const { cal } = this.state;
     if (!cal) {
@@ -42,6 +44,8 @@ export default class AnalysisWeek extends React.Component {
       this.setState({ cal: false, carbo: true });
     }
   }
+
+  // Plotting bar graph for weekly analysis
   dataPlot(data, day) {
     let cal = 0;
     let sodium = 0;
@@ -86,76 +90,88 @@ export default class AnalysisWeek extends React.Component {
     let year = YEAR;
     let month = Month;
     let day = Day;
-    for (let i = 0; i <= dayOfWeekNumber; i++) {
-      if (dayOfWeekNumber - i >= Day) {
-        let j = dayOfWeekNumber - i - Day;
-        if (
-          Month === 2 ||
-          Month === 4 ||
-          Month === 6 ||
-          Month === 8 ||
-          Month === 9 ||
-          Month === 11 ||
-          Month === 1
-        ) {
-          day = 31 - j;
-        } else if (Month === 5 || Month === 7 || Month === 10 || Month === 12) {
-          day = 30 - j;
-        } else {
-          if (YEAR % 4 === 0 && YEAR !== 2100) {
-            day = 29 - j;
-          } else {
-            day = 28 - j;
-          }
-        }
-        if (Month === 1) {
-          year = YEAR - 1;
-          month = 12;
-        } else {
-          month = Month - 1;
-        }
-      } else {
-        month = Month;
-        day = Day - (dayOfWeekNumber - i);
-      }
-      const MONTH = month.toString().padStart(2, "0");
-      const DAY = day.toString().padStart(2, "0");
-      let formattedDate = `${year}-${MONTH}-${DAY}`;
-      this.fetchData(formattedDate, i);
-    }
-  }
-  fetchData = async (date, i) => {
-    try {
-      const messagesRef = ref(database); // Reference to the desired location in the Realtime Database
-
-      // Attach an event listener to listen for changes in the data
-      onValue(messagesRef, (snapshot) => {
+    let i = 0;
+  
+    const fetchDataAndUpdateState = async (date, index) => {
+      try {
+        const messagesRef = ref(database); // Reference to the desired location in the Realtime Database
+  
+        const snapshot = await get(messagesRef); // Retrieve the data from the database
+  
         const fetchedData = snapshot.val();
         const filteredData = Object.values(fetchedData.Logs).filter(
-          // Retrieve items that are realted to the logged in user and is from today
+          // Retrieve items that are related to the logged-in user and are from today
           (item) =>
             item.authorEmail === USER_CURRENT.email && item.date === date
         );
-
+  
         let filteredData2 = [];
         for (let j = 0; j < filteredData.length; j++) {
           if (filteredData[j].data) {
             filteredData2.push(filteredData[j]);
           }
         }
+  
         // Create a copy of the datas array
         const updatedDatas = [...this.state.datas];
-
-        // Modify the desired part
-        updatedDatas[i] = filteredData2;
-
+  
+        // Assign the filtered data to the updatedDatas array
+        updatedDatas[index] = filteredData2;
+  
         // Update the state with the modified array
-        this.setState({ datas: updatedDatas });
-      });
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-  };
+        await new Promise((resolve) => {
+          this.setState({ datas: updatedDatas }, resolve);
+        });
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+  
+    const processNextIteration = async () => {
+      if (i <= dayOfWeekNumber) {
+        if (dayOfWeekNumber - i >= Day) {
+          let j = dayOfWeekNumber - i - Day;
+          if (
+            Month === 2 ||
+            Month === 4 ||
+            Month === 6 ||
+            Month === 8 ||
+            Month === 9 ||
+            Month === 11 ||
+            Month === 1
+          ) {
+            day = 31 - j;
+          } else if (Month === 5 || Month === 7 || Month === 10 || Month === 12) {
+            day = 30 - j;
+          } else {
+            if (YEAR % 4 === 0 && YEAR !== 2100) {
+              day = 29 - j;
+            } else {
+              day = 28 - j;
+            }
+          }
+          if (Month === 1) {
+            year = YEAR - 1;
+            month = 12;
+          } else {
+            month = Month - 1;
+          }
+        } else {
+          month = Month;
+          day = Day - (dayOfWeekNumber - i);
+        }
+        const MONTH = month.toString().padStart(2, "0");
+        const DAY = day.toString().padStart(2, "0");
+        let formattedDate = `${year}-${MONTH}-${DAY}`;
+        
+        await fetchDataAndUpdateState(formattedDate, i);
+        i++;
+        processNextIteration();
+      }
+    };
+  
+    processNextIteration();
+  }
 
   // Convert Firebase data into array format for graph plot
   convertData(day) {
@@ -171,6 +187,7 @@ export default class AnalysisWeek extends React.Component {
   }
   render() {
     const { cal, carbo } = this.state;
+   
     const shouldRender = this.shouldRender();
     const data = [
       this.convertData(0),
@@ -188,9 +205,9 @@ export default class AnalysisWeek extends React.Component {
       barmode: "group",
       paper_bgcolor: "#f5fbfd",
       plot_bgcolor: "#e1f4fa",
-      yaxis: {
-        range: [0, 5000], // Specify the desired range for the y-axis
-      },
+      // yaxis: {
+      //   range: [0, 5000], // Specify the desired range for the y-axis
+      // },
     };
     const sundayNutrition = this.dataPlot(data[0], daysOfWeek[0]);
     const mondayNutrition = this.dataPlot(data[1], daysOfWeek[1]);
