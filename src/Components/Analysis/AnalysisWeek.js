@@ -75,7 +75,7 @@ export default class AnalysisWeek extends React.Component {
       name: "Intake on " + day,
       orientation: "v",
 
-      text: ["", "unit: mg"].map(String),
+      text: ["unit: kcal", "unit: mg"].map(String),
       textposition: "auto",
       marker: {
         color,
@@ -246,6 +246,7 @@ export default class AnalysisWeek extends React.Component {
     ];
     return (
       <div>
+        <h1>Weekly nutritional tracking</h1>
         <div className="Analysis-container">
           <div className="Analysis-sidebar">
             <br />
