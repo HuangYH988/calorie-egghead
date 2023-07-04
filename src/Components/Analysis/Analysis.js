@@ -11,6 +11,8 @@ const RECOMMENDED_CALORIE = 2500;
 const RECOMMENDED_CARBO = 275;
 const RECOMMENDED_SATURATED = 17;
 const RECOMMENDED_CHOLESTROL = 250;
+
+// Convert date to yyyy-mm-dd format
 const date = new Date();
 const year = date.getFullYear();
 const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
@@ -26,6 +28,8 @@ export default class Analysis extends React.Component {
       datas: [],
     };
   }
+
+  // Toggle selections to show user which analysis chart is being viewed
   onClickDaily() {
     const { daily } = this.state;
     if (!daily) {
@@ -38,7 +42,10 @@ export default class Analysis extends React.Component {
       this.setState({ daily: false, weekly: true });
     }
   }
+
+  // Plotting of firebase logged data
   dataPlot(data) {
+    // Calorie, carbohydrate, saturated fat, cholestrol amount and percentage of recommended daily limit
     let cal = 0;
     let carbo = 0;
     let satFat = 0;
@@ -47,6 +54,8 @@ export default class Analysis extends React.Component {
     let percentageCarbo = 0;
     let percentageSatFat = 0;
     let percentageChol = 0;
+
+    // Adding up of all of the numbers in each of 4 categories for all items logged for that day
     for (let i = 0; i < data.length; i++) {
       cal += data[i].calories;
       carbo += data[i].carbohydrates_total_g;
@@ -54,6 +63,7 @@ export default class Analysis extends React.Component {
       chol += data[i].cholesterol_mg;
     }
 
+    // Get percentage of daily maximum limit, capped at 100%
     if (cal >= RECOMMENDED_CALORIE) {
       percentageCal = 100;
     } else {
@@ -74,30 +84,36 @@ export default class Analysis extends React.Component {
     } else {
       percentageChol = (chol / RECOMMENDED_CHOLESTROL) * 100;
     }
+
+    // Details of donut chart, Plotly css
     const pieChartData = [
       {
         values: [percentageCal, 100 - percentageCal],
         labels: [
           "Calories consumed: " + cal,
-          "Maximum daily recommendation: 2500",
+          "Maximum daily recommendation: " + RECOMMENDED_CALORIE + "kcal",
         ],
+
+        //position
         domain: {
           x: [0, 0.48],
           y: [0.52, 1],
         },
 
+        // Title
         name: "Daily calories consumed",
+        // Donut hole size
         hole: 0.4,
         type: "pie",
         marker: {
-          colors: ["orange", "blue"],
+          colors: ["red", "blue"],
         },
       },
       {
         values: [percentageCarbo, 100 - percentageCarbo],
         labels: [
           "Carbohydrate consumed: " + carbo,
-          "Maximum daily recommendation: 275g",
+          "Maximum daily recommendation: " + RECOMMENDED_CARBO + "g",
         ],
         domain: {
           x: [0.52, 1],
@@ -108,14 +124,14 @@ export default class Analysis extends React.Component {
         hole: 0.4,
         type: "pie",
         marker: {
-          colors: ["purple", "blue"],
+          colors: ["gold", "blue"],
         },
       },
       {
         values: [percentageSatFat, 100 - percentageSatFat],
         labels: [
           "Saturated fat consumed: " + satFat,
-          "Maximum daily recommendation: 17g",
+          "Maximum daily recommendation: " + RECOMMENDED_SATURATED + "g",
         ],
         domain: {
           x: [0, 0.48],
@@ -126,14 +142,14 @@ export default class Analysis extends React.Component {
         hole: 0.4,
         type: "pie",
         marker: {
-          colors: ["darkred", "blue"],
+          colors: ["beige", "blue"],
         },
       },
       {
         values: [percentageChol, 100 - percentageChol],
         labels: [
           "Cholestrol consumed: " + chol,
-          "Maximum daily recommendation: 250mg",
+          "Maximum daily recommendation: " + RECOMMENDED_CHOLESTROL + "mg",
         ],
         domain: {
           x: [0.52, 1],
@@ -144,7 +160,7 @@ export default class Analysis extends React.Component {
         hole: 0.4,
         type: "pie",
         marker: {
-          colors: ["lightgreen", "blue"],
+          colors: ["purple", "blue"],
         },
       },
     ];
@@ -157,6 +173,7 @@ export default class Analysis extends React.Component {
     const { pathname } = window.location;
     return pathname === "/analysis";
   }
+
   componentDidMount() {
     this.fetchData();
   }
@@ -175,6 +192,7 @@ export default class Analysis extends React.Component {
             item.date === formattedDate
         );
 
+        // Convert filteredData to correct format and filter out unwanted parts and empty arrays
         let filteredData2 = [];
         for (let i = 0; i < filteredData.length; i++) {
           if (filteredData[i].data) {
@@ -200,12 +218,15 @@ export default class Analysis extends React.Component {
     }
     return newData;
   }
+
   render() {
     const { daily, weekly } = this.state;
     const shouldRender = this.shouldRender();
-    const data = this.convertData();
 
+    const data = this.convertData();
     const chartData = this.dataPlot(data);
+
+    // Layout for Plotly graph plots
     const layout = {
       title: "% of Recommended Consumed Today",
       paper_bgcolor: "#f5fbfd",
