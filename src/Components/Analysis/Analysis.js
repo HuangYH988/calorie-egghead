@@ -297,7 +297,8 @@ export default class Analysis extends React.Component {
     return (
       <div>
         <div>
-          <h1>Daily nutritional intake</h1>
+          {shouldRender && (<h1>Daily nutritional intake</h1>)}
+          
           <Outlet />
 
           {shouldRender && (
@@ -306,12 +307,6 @@ export default class Analysis extends React.Component {
               <div className="Analysis-sidebar">
                 <div>
                   <h3>Daily recommended maximum intake:</h3>
-<<<<<<< HEAD
-
-                  Calorie: {RECOMMENDED_CALORIE}cal <br />
-                  Carbohydrate: {RECOMMENDED_CARBO}g <br />
-                  Saturated Fat: {RECOMMENDED_SATURATED}g <br />
-=======
                   <br />
                   <br />
                   Calories: {RECOMMENDED_CALORIE}kcal
@@ -323,7 +318,6 @@ export default class Analysis extends React.Component {
                   Saturated Fat: {RECOMMENDED_SATURATED}g
                   <br />
                   <br />
->>>>>>> 06fce26e6dc3c8067c34bdfd7a4493803a9a0192
                   Cholestrol: {RECOMMENDED_CHOLESTROL}mg
                 </div>
                 
